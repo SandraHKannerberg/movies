@@ -1,7 +1,67 @@
+import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
+import { Logotype } from "@/components/ui/logotype";
+import { Check } from "lucide-react";
+
 export default async function Home() {
   return (
     <>
-      <h1>HOMEPAGE</h1>
+      {/* Herosection */}
+      <section className="relative bg-[url('/assets/images/popcorn.jpg')] bg-cover bg-center w-full h-screen flex justify-center items-center text-background">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-foreground opacity-30"></div>
+
+        {/* Overlay content */}
+        <div className="absolute flex flex-col items-center justify-center text-background">
+          <h1 className="font-secondary text-2xl font-semibold">
+            Timeless movies, endless memories
+          </h1>
+          <Logotype></Logotype>
+        </div>
+      </section>
+
+      <main>
+        <MaxWidthWrapper className="grid grid-cols-5">
+          {/* About us -- cta-overview */}
+          {/* TODO: update Lorem ipsum text content */}
+          <section className="py-10 grid grid-cols-2 col-span-5">
+            <h2 className="flex items-center font-secondary font-semibold">
+              Why Memovies?
+            </h2>
+            <ul className="flex flex-col gap-5">
+              <li className="flex items-center gap-3">
+                <Check></Check>
+                <p className="text-xs">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                </p>
+              </li>
+              <li className="flex items-center gap-3">
+                <Check></Check>
+                <p className="text-xs">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                </p>
+              </li>
+              <li className="flex items-center gap-3">
+                <Check></Check>
+                <p className="text-xs">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                </p>
+              </li>
+            </ul>
+          </section>
+
+          {/* Selected movies */}
+          <h2 className="text-center font-secondary font-semibold col-span-5">
+            Selected movies
+          </h2>
+          {/* TODO: import selected-movies component here */}
+
+          {/* Movie genre / Categories */}
+          <h2 className="text-center font-secondary font-semibold col-span-5">
+            Categories
+          </h2>
+          {/* TODO: import categories component here */}
+        </MaxWidthWrapper>
+      </main>
     </>
   );
 }
