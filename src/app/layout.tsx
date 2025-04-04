@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Poiret_One } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/header";
 
 // Font-family for text - primary
 const montserrat = Montserrat({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${poiretOne.variable} antialiased`}
       >
+        <Header></Header>
         {children}
       </body>
     </html>
