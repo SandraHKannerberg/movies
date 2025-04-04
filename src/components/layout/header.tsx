@@ -3,9 +3,9 @@ import { Logotype } from "../ui/logotype";
 import { Navbar } from "../ui/navbar";
 import Link from "next/link";
 
-const Header = () => {
+export const Header = () => {
   return (
-    <header className="p-3 pl-6 grid grid-cols-3">
+    <header className="py-3 px-6 grid grid-cols-3">
       <Link href="/" legacyBehavior passHref>
         <Logotype width={100} className="cursor-pointer"></Logotype>
       </Link>
@@ -14,5 +14,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;

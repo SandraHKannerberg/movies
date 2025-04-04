@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Poiret_One } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/header";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 
 // Font-family for text - primary
 const montserrat = Montserrat({
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <Header></Header>
         {children}
+        <Footer></Footer>
       </body>
     </html>
   );
