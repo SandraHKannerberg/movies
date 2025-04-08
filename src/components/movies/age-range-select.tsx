@@ -42,20 +42,6 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
   // Get all relevant age ranges
   const availableAgeRanges = filterAgeRanges();
 
-  // const handleSearch = () => {
-  //   // Manipulating the URL query parameters
-  //   const params = new URLSearchParams(searchParams);
-  //   // Set the params string based on the user’s input. If the input is empty, delete it
-  //   if (term) {
-  //     params.set("query", term);
-  //     params.delete("page"); //reset pagination
-  //   } else {
-  //     params.delete("query");
-  //   }
-  //   //As the user types into the search bar, params.toString() translates this input into a URL-friendly format.
-  //   replace(`${pathname}?${params.toString()}`);
-  // };
-
   // Get the age range for the api-call
   const getYearRange = () => {
     if (selectedAgeRange) {
@@ -68,8 +54,8 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
 
       const params = new URLSearchParams(searchParams);
 
-      params.set("yearFrom", yearFrom.toString()); // sätt eller uppdatera age-param
-      params.set("yearTo", yearTo.toString()); // sätt eller uppdatera age-param
+      params.set("yearFrom", yearFrom.toString());
+      params.set("yearTo", yearTo.toString());
 
       replace(`${pathname}?${params.toString()}`);
 
@@ -90,6 +76,16 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     setSelectedAgeRange(ageRange); // Start useEffect
   };
 
+  // Clear age range and delete age range params
+  const handleClear = () => {
+    setSelectedAgeRange(null);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("yearFrom");
+    params.delete("yearTo");
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <>
       <section className="my-10 flex gap-3 justify-center">
@@ -105,6 +101,12 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
             {ageRange}
           </Button>
         ))}
+
+        {selectedAgeRange && (
+          <Button variant="outline" onClick={handleClear}>
+            Clear
+          </Button>
+        )}
       </section>
     </>
   );

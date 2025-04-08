@@ -9,22 +9,25 @@ import React, { Suspense } from "react";
 
 export default function NostalgiaPage() {
   const { query } = useParams();
-  const yearFrom = useSearchParams().get("yearFrom");
-  const yearTo = useSearchParams().get("yearTo");
+  const yearFromParam = useSearchParams().get("yearFrom");
+  const yearToParam = useSearchParams().get("yearTo");
 
   // Year of birth
-  const yearString = Array.isArray(query) ? query[0] : query;
-  const year = yearString ? parseInt(yearString, 10) : 2000;
+  const year = parseInt(query as string, 10);
 
   // Year from
-  const yearFromAsString = Array.isArray(yearFrom) ? yearFrom[0] : yearFrom;
-  const yearFromAsNumber = yearFromAsString
-    ? parseInt(yearFromAsString, 10)
-    : 2000;
+  const yearFrom =
+    parseInt(
+      Array.isArray(yearFromParam) ? yearFromParam[0] : yearFromParam ?? "",
+      10
+    ) || undefined;
 
   // YearTo
-  const yearToAsString = Array.isArray(yearTo) ? yearTo[0] : yearTo;
-  const yearToAsNumber = yearToAsString ? parseInt(yearToAsString, 10) : 2000;
+  const yearTo =
+    parseInt(
+      Array.isArray(yearToParam) ? yearToParam[0] : yearToParam ?? "",
+      10
+    ) || undefined;
 
   return (
     <>
@@ -40,8 +43,8 @@ export default function NostalgiaPage() {
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
-              yearFrom={yearFromAsNumber ?? year} // If no age range year are default value
-              yearTo={yearToAsNumber ?? year} // If no age range year are default value
+              yearFrom={yearFrom ?? year} // If no age range year are default value
+              yearTo={yearTo ?? year} // If no age range year are default value
               className={"grid-cols-5"}
             />
           </Suspense>
