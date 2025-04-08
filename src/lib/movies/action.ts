@@ -28,11 +28,14 @@ export async function fetchNowPlayingMovies() {
   return data;
 }
 
-export async function fetchMoviesByYear(query: number): Promise<Movie[]> {
+export async function fetchMoviesByYear(
+  yearFrom: number,
+  yearTo: number
+): Promise<Movie[]> {
   try {
     // Fetch data
     const res = await fetch(
-      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${query}-01-01&primary_release_date.lte=${query}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=en|sv`,
+      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=en|sv`,
       options
     );
 
