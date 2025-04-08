@@ -43,8 +43,8 @@ export default function NostalgiaPage() {
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
-              yearFrom={yearFrom ?? year} // If no age range year are default value
-              yearTo={yearTo ?? year} // If no age range year are default value
+              yearFrom={yearFrom ?? year} // If no age range year of birth are default value
+              yearTo={yearTo ?? year} // If no age range year of birth are default value
               className={"grid-cols-5"}
             />
           </Suspense>
