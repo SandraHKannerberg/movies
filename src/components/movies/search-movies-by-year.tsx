@@ -30,7 +30,8 @@ export const SearchMoviesByYear = ({
   }, 300);
 
   return (
-    <section className="my-20 relative">
+    // TODO: use form from shadcn
+    <div className="relative mt-5 w-full">
       {/* TODO: Update colors in theme colors. Neutral colors that do not change in light/dark mode */}
       <Input
         id="search"
@@ -40,9 +41,9 @@ export const SearchMoviesByYear = ({
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get("query")?.toString()}
-        className="relative bg-accent border-2 border-gray-500"
+        className="relative bg-accent border-2 border-gray-500 text-black"
       />
       <SearchIcon className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-    </section>
+    </div>
   );
 };

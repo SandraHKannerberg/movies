@@ -4,15 +4,27 @@ import { Header } from "@/components/layout/header";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/movies/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 
 export default function NostalgiaPage() {
   const { query } = useParams();
+  const yearFrom = useSearchParams().get("yearFrom");
+  const yearTo = useSearchParams().get("yearTo");
 
+  // Year of birth
   const yearString = Array.isArray(query) ? query[0] : query;
-
   const year = yearString ? parseInt(yearString, 10) : 2000;
+
+  // Year from
+  const yearFromAsString = Array.isArray(yearFrom) ? yearFrom[0] : yearFrom;
+  const yearFromAsNumber = yearFromAsString
+    ? parseInt(yearFromAsString, 10)
+    : 2000;
+
+  // YearTo
+  const yearToAsString = Array.isArray(yearTo) ? yearTo[0] : yearTo;
+  const yearToAsNumber = yearToAsString ? parseInt(yearToAsString, 10) : 2000;
 
   return (
     <>
@@ -26,9 +38,13 @@ export default function NostalgiaPage() {
           <AgeRangeSelect year={year} />
 
           {/* TODO: Loader component */}
-          {/* <Suspense fallback={"Loading...."}>
-            <MoviesList year={year} className={"grid-cols-5"} />
-          </Suspense> */}
+          <Suspense fallback={"Loading...."}>
+            <MoviesList
+              yearFrom={yearFromAsNumber ?? year} // If no age range year are default value
+              yearTo={yearToAsNumber ?? year} // If no age range year are default value
+              className={"grid-cols-5"}
+            />
+          </Suspense>
         </MaxWidthWrapper>
       </main>
     </>
