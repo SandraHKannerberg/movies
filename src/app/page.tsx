@@ -1,12 +1,15 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { MoviesList } from "@/components/movies/movies-list";
+import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
 import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
+import { TopRatedMovies } from "@/components/movies/top-rated-movies";
+import { UpcomingMovies } from "@/components/movies/upcoming-movies";
 import { Logotype } from "@/components/ui/logotype";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default async function Home({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -60,45 +63,35 @@ export default async function Home({
 
       <main>
         <MaxWidthWrapper className="grid grid-cols-5">
-          {/* About us -- cta-overview */}
-          {/* TODO: update Lorem ipsum text content */}
-          <section className="py-10 grid grid-cols-2 col-span-5">
-            <h2 className="flex items-center font-secondary font-semibold">
-              Why Memovies?
+          {/* TODO: import categories component here */}
+          {/* Movie genre / Categories - rullande text med alla kategorier*/}
+
+          {/* Top rated movies */}
+          <section className="col-span-5 grid-cols-5 my-20">
+            <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
+              Top rated movies from different years
             </h2>
-            <ul className="flex flex-col gap-5">
-              <li className="flex items-center gap-3">
-                <Check></Check>
-                <p className="text-xs">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                </p>
-              </li>
-              <li className="flex items-center gap-3">
-                <Check></Check>
-                <p className="text-xs">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                </p>
-              </li>
-              <li className="flex items-center gap-3">
-                <Check></Check>
-                <p className="text-xs">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                </p>
-              </li>
-            </ul>
+            <TopRatedMovies />
           </section>
 
-          {/* Selected movies */}
-          <h2 className="text-center font-secondary font-semibold col-span-5">
-            Selected movies
-          </h2>
-          {/* TODO: import selected-movies component here */}
+          {/* Now playing movies */}
+          <section className="col-span-5 grid-cols-5 my-20">
+            <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
+              Currently in theatres
+            </h2>
+            <NowPlayingMovies />
+          </section>
 
-          {/* Movie genre / Categories */}
-          <h2 className="text-center font-secondary font-semibold col-span-5">
-            Categories
-          </h2>
-          {/* TODO: import categories component here */}
+          {/* Upcoming movies */}
+          <section className="col-span-5 grid-cols-5 my-20">
+            <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
+              Keep up with the latest
+            </h2>
+            <UpcomingMovies />
+          </section>
+
+          {/* TODO: import about us overview component here */}
+          {/* why memovies -- cta-overview - rullande text med nyckelord about us*/}
         </MaxWidthWrapper>
       </main>
     </>

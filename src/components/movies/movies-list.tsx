@@ -17,17 +17,6 @@ export const MoviesList = ({
   showRandom?: boolean;
   className?: string;
 }) => {
-  // let movies;
-
-  //   if (year) {
-  //     movies = await fetchMoviesByYear(year);
-  //     movies = movies ?? [];
-
-  //     if (showRandom) {
-  //       movies = getRandomMovies(movies, 5);
-  //     }
-  //   }
-
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -57,6 +46,9 @@ export const MoviesList = ({
       fetchMovies(); // Call the async function
     }
   }, [yearFrom, yearTo, showRandom]); // Run when year or showRandom change
+
+  // TODO: put loader component here
+  if (loading) return <p>Searching for movies...</p>;
 
   return (
     <>
