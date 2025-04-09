@@ -1,6 +1,6 @@
 "use server";
 
-import { Movie, MoviesApiData } from "./interfaces";
+import { Movie, MovieFromApi, MoviesApiData } from "./interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 
@@ -59,10 +59,41 @@ export async function fetchMoviesByYear(
       onWatchList: Boolean(false),
     }));
 
-    console.log(
-      "------------- SVAR DITT FILMÅR *** UPPDATERAD DATA ----------------",
-      updatedMovies
+    return updatedMovies;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+export async function fetchTopRatedMovies(): Promise<Movie[]> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      `${API_ENDPOINT}/movie/top_rated?language=en-US&page=1`,
+      options
     );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const movieData: MoviesApiData = await res.json();
+
+    // Check data format
+    if (!Array.isArray(movieData.results)) {
+      throw new Error("Invalid data format received");
+    }
+
+    // Add new properties to Movie object
+    const updatedMovies: Movie[] = movieData.results.map((movie) => ({
+      ...movie,
+
+      isFavourite: Boolean(false),
+      onWatchList: Boolean(false),
+    }));
+
     return updatedMovies;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
