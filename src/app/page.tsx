@@ -4,8 +4,7 @@ import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
 import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { UpcomingMovies } from "@/components/movies/upcoming-movies";
-import { Logotype } from "@/components/ui/logotype";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -25,21 +24,22 @@ export default async function HomePage({
       {/* Herosection */}
       <section className="relative bg-[url('/assets/images/popcorn.jpg')] bg-cover bg-center w-full h-screen flex flex-col items-center text-background pt-10">
         {/* Overlay gradient-background*/}
-        <div className="absolute inset-0 bg-foreground opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 to-foreground/90"></div>
 
-        <section className="z-10 flex flex-col items-center justify-start text-background mx-5 mb-10">
-          <Logotype />
-          <h1 className="font-secondary text-2xl font-semibold">
+        <section className="z-10 flex flex-col gap-5 items-center justify-start text-background mx-5 my-15">
+          <h1 className="font-secondary text-5xl font-semibold">
             Timeless movies, endless memories
           </h1>
-
+          <p className="text-2xl font-semibold">
+            Start here and experience the movies from your year of birth
+          </p>
           <SearchMoviesByYear placeholder="Enter year of birth" />
         </section>
 
         {year ? (
-          <>
+          <MaxWidthWrapper className="z-10">
             {/* TODO: hover animation */}
-            <div className="flex justify-end w-full mb-3 mr-5 z-10">
+            <div className="flex justify-end w-full mb-3 mr-5">
               <Link
                 href={`/nostalgia/${year}`}
                 className="uppercase text-white flex hover:underline"
@@ -57,7 +57,7 @@ export default async function HomePage({
                 className={"px-5 grid-cols-5 w-full z-10"}
               />
             </Suspense>
-          </>
+          </MaxWidthWrapper>
         ) : null}
       </section>
 
