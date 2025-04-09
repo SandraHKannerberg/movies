@@ -24,16 +24,16 @@ export default async function HomePage({
       {/* Herosection */}
       <section className="relative bg-[url('/assets/images/popcorn.jpg')] bg-cover bg-center w-full h-screen flex flex-col items-center text-background pt-10">
         {/* Overlay gradient-background*/}
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 to-foreground/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-overlay/5 to-overlay/90"></div>
 
-        <section className="z-10 flex flex-col gap-5 items-center justify-start text-background mx-5 my-15">
+        <section className="z-10 flex flex-col gap-5 items-center text-neutral-50 justify-start mx-5 my-15">
           <h1 className="font-secondary text-5xl font-semibold">
             Timeless movies, endless memories
           </h1>
           <p className="text-2xl font-semibold">
             Start here and experience the movies from your year of birth
           </p>
-          <SearchMoviesByYear placeholder="Enter year of birth" />
+          <SearchMoviesByYear placeholder="Enter year of birth ..." />
         </section>
 
         {year ? (
