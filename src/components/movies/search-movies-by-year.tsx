@@ -30,20 +30,26 @@ export const SearchMoviesByYear = ({
   }, 300);
 
   return (
-    // TODO: use form from shadcn
-    <div className="relative mt-5 w-full">
-      {/* TODO: Update colors in theme colors. Neutral colors that do not change in light/dark mode */}
+    // TODO: use form from shadcn??
+    <form className="space-y-4 relative mt-5 w-full">
+      <label
+        htmlFor="year"
+        className="sr-only"
+        aria-label="Enter year of birth"
+      >
+        Enter year of birth
+      </label>
       <Input
-        id="search"
+        id="year"
         type="text"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get("query")?.toString()}
-        className="relative bg-accent border-2 border-gray-500 text-black"
+        className="relative py-5 border-4 border-neutral-300 text-neutral-50 font-semibold bg-white/55 backdrop-blur-lg transition-all"
       />
-      <SearchIcon className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-    </div>
+      <SearchIcon className="absolute right-3 top-1/3 h-[20px] w-[20px] -translate-y-1/2 text-neutral-50 peer-focus:text-neutral-900" />
+    </form>
   );
 };
