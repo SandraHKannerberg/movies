@@ -14,20 +14,7 @@ const options = {
   },
 };
 
-export async function fetchNowPlayingMovies() {
-  const res = await fetch(
-    API_ENDPOINT + "/movie/now_playing?language=en-US&page=1",
-    options
-  );
-
-  if (!res.ok) {
-    throw new Error(`Error HTTP status: ${res.status}`);
-  }
-
-  const data = await res.json();
-  return data;
-}
-
+// Get a list of movies depending on year of birth and agerange
 export async function fetchMoviesByYear(
   yearFrom: number,
   yearTo: number
@@ -66,11 +53,48 @@ export async function fetchMoviesByYear(
   }
 }
 
+// Get a list of movies ordered by rating
 export async function fetchTopRatedMovies(): Promise<Movie[]> {
   try {
     // Fetch data
     const res = await fetch(
       `${API_ENDPOINT}/movie/top_rated?language=en-US&page=1`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const movieData: MoviesApiData = await res.json();
+
+    // Check data format
+    if (!Array.isArray(movieData.results)) {
+      throw new Error("Invalid data format received");
+    }
+
+    // Add new properties to Movie object
+    const updatedMovies: Movie[] = movieData.results.map((movie) => ({
+      ...movie,
+
+      isFavourite: Boolean(false),
+      onWatchList: Boolean(false),
+    }));
+
+    return updatedMovies;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+// Get a list of movies that are currently in theatres.
+export async function fetchNowPlayingMovies(): Promise<Movie[]> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + "/movie/now_playing?language=en-US&page=1",
       options
     );
 
