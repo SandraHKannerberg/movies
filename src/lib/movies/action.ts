@@ -124,3 +124,39 @@ export async function fetchNowPlayingMovies(): Promise<Movie[]> {
     throw error;
   }
 }
+
+// Get a list of upcoming movies
+export async function fetchUpcomingMovies(): Promise<Movie[]> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + "/movie/upcoming?language=en-US&page=1",
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const movieData: MoviesApiData = await res.json();
+
+    // Check data format
+    if (!Array.isArray(movieData.results)) {
+      throw new Error("Invalid data format received");
+    }
+
+    // Add new properties to Movie object
+    const updatedMovies: Movie[] = movieData.results.map((movie) => ({
+      ...movie,
+
+      isFavourite: Boolean(false),
+      onWatchList: Boolean(false),
+    }));
+
+    return updatedMovies;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
