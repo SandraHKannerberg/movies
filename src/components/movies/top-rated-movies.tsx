@@ -8,14 +8,8 @@ export const TopRatedMovies = async () => {
   // Fetch toprated movies
   const movies = await fetchTopRatedMovies();
 
-  // Sort by vote
-  const sortedByVote = [...movies].sort(
-    (a, b) => b.vote_average - a.vote_average
-  );
-
-  // Get the 10 movies
-  //TODO: make this random later
-  const topRatedMovies: Movie[] = sortedByVote.slice(0, 10);
+  // Display 10 movies
+  const topRatedMovies: Movie[] = movies.slice(0, 10);
 
   return (
     <>

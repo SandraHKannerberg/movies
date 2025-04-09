@@ -5,7 +5,6 @@ import { Movie } from "@/lib/movies/interfaces";
 import { Rating } from "../ui/rating";
 
 export const NowPlayingMovies = async () => {
-  // Fetch toprated movies
   const movies = await fetchNowPlayingMovies();
 
   // Sort by vote
@@ -13,8 +12,7 @@ export const NowPlayingMovies = async () => {
     (a, b) => b.vote_average - a.vote_average
   );
 
-  // Get the 10 movies
-  //TODO: make this random later
+  // Display 10 movies
   const popularMovies: Movie[] = sortedByVote.slice(0, 10);
 
   return (
