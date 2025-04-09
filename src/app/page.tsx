@@ -1,12 +1,13 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { MoviesList } from "@/components/movies/movies-list";
 import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
+import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { Logotype } from "@/components/ui/logotype";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default async function Home({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -60,7 +61,23 @@ export default async function Home({
 
       <main>
         <MaxWidthWrapper className="grid grid-cols-5">
+          {/* TODO: import categories component here */}
+          {/* Movie genre / Categories - rullande text med alla kategorier*/}
+          {/* <h2 className="text-center font-secondary font-semibold col-span-5">
+            Categories
+          </h2> */}
+
+          {/* TODO: import selected-movies component here */}
+          {/* Selected movies */}
+          <section className="col-span-5 grid-cols-5 my-20">
+            <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
+              Top rated movies from different years
+            </h2>
+            <TopRatedMovies />
+          </section>
+
           {/* About us -- cta-overview */}
+          {/* TODO: create About us component */}
           {/* TODO: update Lorem ipsum text content */}
           <section className="py-10 grid grid-cols-2 col-span-5">
             <h2 className="flex items-center font-secondary font-semibold">
@@ -87,18 +104,6 @@ export default async function Home({
               </li>
             </ul>
           </section>
-
-          {/* Selected movies */}
-          <h2 className="text-center font-secondary font-semibold col-span-5">
-            Selected movies
-          </h2>
-          {/* TODO: import selected-movies component here */}
-
-          {/* Movie genre / Categories */}
-          <h2 className="text-center font-secondary font-semibold col-span-5">
-            Categories
-          </h2>
-          {/* TODO: import categories component here */}
         </MaxWidthWrapper>
       </main>
     </>
