@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { MoviesList } from "@/components/movies/movies-list";
+import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
 import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { Logotype } from "@/components/ui/logotype";
@@ -67,13 +68,20 @@ export default async function HomePage({
             Categories
           </h2> */}
 
-          {/* TODO: import selected-movies component here */}
-          {/* Selected movies */}
+          {/* Top rated movies */}
           <section className="col-span-5 grid-cols-5 my-20">
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Top rated movies from different years
             </h2>
             <TopRatedMovies />
+          </section>
+
+          {/* Now playing movies */}
+          <section className="col-span-5 grid-cols-5 my-20">
+            <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
+              Currently in theatres
+            </h2>
+            <NowPlayingMovies />
           </section>
 
           {/* About us -- cta-overview */}
