@@ -2,6 +2,7 @@ import { fetchTopRatedMovies } from "@/lib/movies/action";
 import React from "react";
 import { MovieCard } from "./movie-card";
 import { Movie } from "@/lib/movies/interfaces";
+import { Rating } from "../ui/rating";
 
 export const TopRatedMovies = async () => {
   // Fetch toprated movies
@@ -24,10 +25,10 @@ export const TopRatedMovies = async () => {
             <li key={movie.id}>
               <MovieCard movie={movie} />
               {/* Slice the year from date */}
-              <h3 className="mt-3">
+              <h3 className="my-3 text-lg">
                 From year {movie.release_date.slice(0, 4)}
               </h3>
-              <p>Votes: {movie.vote_average}</p>
+              <Rating rating={movie.vote_average} />
             </li>
           ))}
         </ul>
