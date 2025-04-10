@@ -53,15 +53,14 @@ export const MoviesList = ({
   return (
     <>
       {movies ? (
-        <section className={className}>
-          <ul className="grid justify-center md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {movies.map((movie) => (
-              <li key={movie.id}>
-                <MovieCard movie={movie} />
-              </li>
-            ))}
-          </ul>
-        </section>
+        <ul className={className}>
+          {/* Mappa över alla filmer */}
+          {movies.map((movie) => (
+            <li key={movie.id}>
+              <MovieCard movie={movie} />
+            </li>
+          ))}
+        </ul>
       ) : null}
     </>
   );

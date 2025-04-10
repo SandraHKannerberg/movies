@@ -45,7 +45,9 @@ export default function NostalgiaPage() {
             <MoviesList
               yearFrom={yearFrom ?? year} // If no age range year of birth are default value
               yearTo={yearTo ?? year} // If no age range year of birth are default value
-              className={"grid-cols-5"}
+              className={
+                "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"
+              }
             />
           </Suspense>
         </MaxWidthWrapper>

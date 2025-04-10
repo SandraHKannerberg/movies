@@ -22,7 +22,7 @@ export default async function HomePage({
   return (
     <>
       {/* Herosection */}
-      <section className="relative bg-[url('/assets/images/popcorn.jpg')] bg-cover bg-center w-full h-screen flex flex-col items-center text-background pt-10">
+      <section className="relative bg-[url('/assets/images/popcorn.jpg')] bg-cover bg-center w-full min-h-screen flex flex-col items-center text-background py-10">
         {/* Overlay gradient-background*/}
         <div className="absolute inset-0 bg-gradient-to-b from-overlay/5 to-overlay/90"></div>
 
@@ -37,26 +37,29 @@ export default async function HomePage({
         </section>
 
         {year ? (
-          <MaxWidthWrapper className="z-10">
-            {/* TODO: hover animation */}
-            <div className="flex justify-end w-full mb-3 mr-5">
-              <Link
-                href={`/nostalgia/${year}`}
-                className="uppercase text-neutral-50 flex hover:underline"
-              >
-                Discover more
-                <ArrowRight></ArrowRight>
-              </Link>
-            </div>
+          <MaxWidthWrapper className="z-10 grid grid-cols-2">
             {/* TODO: Loader component */}
             <Suspense fallback={"Loading...."}>
               <MoviesList
                 yearFrom={year}
                 yearTo={year}
                 showRandom={true}
-                className={"px-5 grid-cols-5 w-full z-10"}
+                className={
+                  "grid col-span-2 grid-cols-2 z-10 px-3 gap-3 md:grid-cols-5"
+                }
               />
             </Suspense>
+
+            {/* TODO: hover animation */}
+            <div className="flex justify-end w-full mt-3 mr-5 col-span-2">
+              <Link
+                href={`/nostalgia/${year}`}
+                className="uppercase text-neutral-50 flex hover:underline"
+              >
+                Discover more movies
+                <ArrowRight></ArrowRight>
+              </Link>
+            </div>
           </MaxWidthWrapper>
         ) : null}
       </section>
