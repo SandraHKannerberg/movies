@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { fetchMoviesByYear } from "@/lib/movies/action";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const AgeRangeSelect = ({ year }: { year: number }) => {
@@ -58,9 +57,6 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
       params.set("yearTo", yearTo.toString());
 
       replace(`${pathname}?${params.toString()}`);
-
-      // When you have the age range - make the fetch
-      // fetchMoviesByYear(yearFrom, yearTo);
     }
   };
 
@@ -88,14 +84,16 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
 
   return (
     <>
-      <section className="my-10 flex gap-3 justify-center">
+      <section className="my-3 flex gap-3 justify-center z-10">
         {availableAgeRanges.map((ageRange) => (
           <Button
             key={ageRange}
-            variant="outline"
+            variant="default"
             onClick={() => handleAgeRangeSelect(ageRange)}
-            className={`cursor-pointer ${
-              selectedAgeRange === ageRange ? "border-2 border-primary" : ""
+            className={`cursor-pointer shadow-lg hover:bg-rose-50 hover:text-neutral-950 ${
+              selectedAgeRange === ageRange
+                ? " bg-rose-50 text-neutral-950"
+                : ""
             }`}
           >
             {ageRange}

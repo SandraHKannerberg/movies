@@ -38,6 +38,16 @@ export default async function HomePage({
 
         {year ? (
           <MaxWidthWrapper className="z-10 grid grid-cols-2">
+            {/* TODO: hover animation */}
+            <div className="flex justify-end w-full mt-3 mb-5 col-span-2">
+              <Link
+                href={`/nostalgia/${year}`}
+                className="uppercase text-neutral-50 flex hover:underline z-100"
+              >
+                Discover more movies
+                <ArrowRight></ArrowRight>
+              </Link>
+            </div>
             {/* TODO: Loader component */}
             <Suspense fallback={"Loading...."}>
               <MoviesList
@@ -49,19 +59,10 @@ export default async function HomePage({
                 }
               />
             </Suspense>
-
-            {/* TODO: hover animation */}
-            <div className="flex justify-end w-full mt-3 mr-5 col-span-2">
-              <Link
-                href={`/nostalgia/${year}`}
-                className="uppercase text-neutral-50 flex hover:underline"
-              >
-                Discover more movies
-                <ArrowRight></ArrowRight>
-              </Link>
-            </div>
           </MaxWidthWrapper>
         ) : null}
+        {/* Gradient fade to main */}
+        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-background z-20" />
       </section>
 
       <main>

@@ -34,15 +34,23 @@ export default function NostalgiaPage() {
 
   return (
     <>
-      <Header />
-      <main>
-        <MaxWidthWrapper>
-          <h1 className="font-secondary text-2xl font-semibold text-center">
+      <section className="relative bg-[url('/assets/images/movie.jpg')] bg-cover bg-center w-full flex flex-col items-center py-10">
+        {/* Overlay gradient-background*/}
+        <div className="absolute inset-0 bg-gradient-to-b from-overlay/5 to-overlay/90"></div>
+        <MaxWidthWrapper className="z-10 my-15">
+          <h1 className="font-secondary text-5xl font-semibold text-center mb-10">
             Nostalgic movie nights
           </h1>
-          <p className="text-center">Select an age and relive movie memories</p>
+          <p className="text-center text-2xl">
+            Select an age and relive movie memories
+          </p>
           <AgeRangeSelect year={year} />
-
+        </MaxWidthWrapper>
+        {/* Gradient fade to main */}
+        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-background z-20" />
+      </section>
+      <main>
+        <MaxWidthWrapper>
           {/* Filter and sortby section */}
           <section className="flex justify-end w-full">
             <FilterByCategory setSelectedCategory={setSelectedCategory} />
