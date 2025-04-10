@@ -1,16 +1,19 @@
 "use client";
 
+import { FilterByCategory } from "@/components/categories-genres/filter-by-category";
 import { Header } from "@/components/layout/header";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/movies/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
+import { Genre } from "@/lib/categories-genres/interfaces";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 
 export default function NostalgiaPage() {
   const { query } = useParams();
   const yearFromParam = useSearchParams().get("yearFrom");
   const yearToParam = useSearchParams().get("yearTo");
+  const [selectedCategory, setSelectedCategory] = useState<Genre | null>(null);
 
   // Year of birth
   const year = parseInt(query as string, 10);
@@ -40,11 +43,17 @@ export default function NostalgiaPage() {
           <p className="text-center">Select an age and relive movie memories</p>
           <AgeRangeSelect year={year} />
 
+          {/* Filter and sortby section */}
+          <section className="flex justify-end w-full">
+            <FilterByCategory setSelectedCategory={setSelectedCategory} />
+          </section>
+
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
               yearFrom={yearFrom ?? year} // If no age range year of birth are default value
               yearTo={yearTo ?? year} // If no age range year of birth are default value
+              categoryId={selectedCategory?.id}
               className={
                 "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"
               }

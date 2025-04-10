@@ -8,10 +8,9 @@ export const Footer = () => {
   return (
     <footer className="my-10 mx-auto w-full max-w-screen-xl">
       {/* Layered top borders */}
-      <div className="h-3 bg-rose-800"></div> {/* ljus nyans */}
-      {/* mörk nyans */}
-      <div className="h-3 bg-rose-900"></div> {/* mellan nyans */}
-      <div className="h-3 bg-rose-950 rounded-tl rounded-tr shadow-rose-300-lg"></div>
+      <div className="h-3 bg-rose-800 rounded-tr rounded-tl"></div>
+      <div className="h-3 bg-rose-900"></div>
+      <div className="h-3 bg-rose-950"></div>
       {/* TODO: newsletter */}
       {/* TODO: bugfix - separator from shadcn does not work */}
       {/* <Separator className="my-4 bg-yellow-300 h-5" /> */}
@@ -38,7 +37,7 @@ export const Footer = () => {
           </Link>
         </nav>
 
-        <hr className="border-t border-border my-4 col-span-2" />
+        <hr className="border-t border-rose-800 my-4 col-span-2" />
         <small className="text-center text-xs col-span-2">
           Copyright &copy; Sandra Höst Kannerberg, 2025
         </small>

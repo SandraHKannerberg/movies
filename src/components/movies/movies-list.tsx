@@ -6,17 +6,21 @@ import React, { useEffect, useState } from "react";
 import { MovieCard } from "./movie-card";
 import { Movie } from "@/lib/movies/interfaces";
 
+interface MoviesListProps {
+  yearFrom: number;
+  yearTo: number;
+  showRandom?: boolean;
+  className?: string;
+  categoryId?: number | undefined;
+}
+
 export const MoviesList = ({
   yearFrom,
   yearTo,
   showRandom = false,
   className,
-}: {
-  yearFrom: number;
-  yearTo: number;
-  showRandom?: boolean;
-  className?: string;
-}) => {
+  categoryId,
+}: MoviesListProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -50,12 +54,15 @@ export const MoviesList = ({
   // TODO: put loader component here
   if (loading) return <p>Searching for movies...</p>;
 
+  const filteredMovies = categoryId
+    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
+    : movies;
+
   return (
     <>
       {movies ? (
         <ul className={className}>
-          {/* Mappa över alla filmer */}
-          {movies.map((movie) => (
+          {filteredMovies.map((movie) => (
             <li key={movie.id}>
               <MovieCard movie={movie} />
             </li>
