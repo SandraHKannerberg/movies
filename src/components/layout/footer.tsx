@@ -8,10 +8,10 @@ export const Footer = () => {
   return (
     <footer className="my-10 mx-auto w-full max-w-screen-xl">
       {/* Layered top borders */}
-      <div className="h-3 bg-rose-950 rounded-tl rounded-tr shadow-rose-300-lg"></div>
+      <div className="h-3 bg-rose-800"></div> {/* ljus nyans */}
       {/* mörk nyans */}
       <div className="h-3 bg-rose-900"></div> {/* mellan nyans */}
-      <div className="h-3 bg-rose-800"></div> {/* ljus nyans */}
+      <div className="h-3 bg-rose-950 rounded-tl rounded-tr shadow-rose-300-lg"></div>
       {/* TODO: newsletter */}
       {/* TODO: bugfix - separator from shadcn does not work */}
       {/* <Separator className="my-4 bg-yellow-300 h-5" /> */}
