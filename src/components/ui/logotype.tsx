@@ -13,12 +13,15 @@ export const Logotype = ({
   className,
 }: LogotypeProps) => {
   return (
-    <Image
-      src="/assets/images/memovies.png"
-      alt="Memovies logotype"
-      width={width}
-      height={height}
-      className={className}
-    />
+    <figure className={`cursor-pointer flex items-center ${className}`}>
+      <Image
+        src="/assets/images/memovies.png"
+        alt="Memovies logotype"
+        width={width}
+        height={height}
+        className="object-cover"
+        priority
+      />
+    </figure>
   );
 };

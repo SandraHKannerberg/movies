@@ -12,7 +12,7 @@ import { Movie } from "@/lib/movies/interfaces";
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
-    <Card className="overflow-hidden rounded-lg">
+    <Card className="overflow-hidden rounded-lg shadow-md shadow-border border-1 border-border">
       <CardTitle className="sr-only">{movie.title}</CardTitle>
       <CardContent className="relative h-[300px] p-0">
         <Image

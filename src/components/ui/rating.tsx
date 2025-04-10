@@ -23,11 +23,12 @@ export const Rating = ({ rating }: RatingDisplayProps) => {
   // Leave the rest empty
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
+  //TODO: förbättra aria-labels
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <div className="flex items-center gap-2">
+          <section className="flex items-center gap-2">
             <div className="flex text-yellow-400">
               {/* Full stars */}
               {Array.from({ length: fullStars }).map((_, i) => (
@@ -35,6 +36,7 @@ export const Rating = ({ rating }: RatingDisplayProps) => {
                   key={`full-${i}`}
                   fill="currentColor"
                   stroke="currentColor"
+                  aria-label="Star rating"
                 />
               ))}
 
@@ -44,6 +46,7 @@ export const Rating = ({ rating }: RatingDisplayProps) => {
                   key="half"
                   fill="currentColor"
                   stroke="currentColor"
+                  aria-label="Star rating"
                 />
               )}
 
@@ -54,10 +57,11 @@ export const Rating = ({ rating }: RatingDisplayProps) => {
                   key={`empty-${i}`}
                   fill="none"
                   className="text-gray-400"
+                  aria-label="Star rating"
                 />
               ))}
             </div>
-          </div>
+          </section>
         </TooltipTrigger>
         <TooltipContent>
           <p>Rating {rating.toFixed(1)}</p>
