@@ -18,9 +18,7 @@ export const Footer = () => {
       <MaxWidthWrapper className="bg-background-secondary h-min-50 rounded p-5 grid grid-cols-2 gap-5 md:gap-3 justify-between">
         <section className="flex flex-col gap-3 col-span-2 md:col-span-1 ">
           <Link href="/">
-            <figure className="w-50 h-30 flex items-center">
-              <Logotype className="cursor-pointer object-cover"></Logotype>
-            </figure>
+            <Logotype className={"w-50 h-30"}></Logotype>
           </Link>
           <h3 className="font-secondary text-lg font-semibold">
             Timeless movies, endless memories
