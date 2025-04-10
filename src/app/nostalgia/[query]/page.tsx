@@ -1,5 +1,6 @@
 "use client";
 
+import { FilterByCategory } from "@/components/categories-genres/filter-by-category";
 import { Header } from "@/components/layout/header";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/movies/age-range-select";
@@ -39,6 +40,8 @@ export default function NostalgiaPage() {
           </h1>
           <p className="text-center">Select an age and relive movie memories</p>
           <AgeRangeSelect year={year} />
+
+          <FilterByCategory />
 
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
