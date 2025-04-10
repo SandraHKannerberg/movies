@@ -14,7 +14,7 @@ export const TopRatedMovies = async () => {
   return (
     <>
       {topRatedMovies ? (
-        <ul className="grid justify-center md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <ul className="grid justify-center grid-cols-2 gap-3 px-3 md:grid-cols-5 md:gap-8">
           {topRatedMovies.map((movie) => (
             <li key={movie.id}>
               <MovieCard movie={movie} />

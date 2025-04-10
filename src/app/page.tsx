@@ -27,10 +27,10 @@ export default async function HomePage({
         <div className="absolute inset-0 bg-gradient-to-b from-overlay/5 to-overlay/90"></div>
 
         <section className="z-10 flex flex-col gap-5 items-center text-neutral-50 justify-start mx-5 my-15">
-          <h1 className="font-secondary text-5xl font-semibold">
+          <h1 className="font-secondary text-5xl font-semibold text-center">
             Timeless movies, endless memories
           </h1>
-          <p className="text-2xl font-semibold">
+          <p className="text-2xl font-semibold text-center">
             Start here and experience the movies from your year of birth
           </p>
           <SearchMoviesByYear placeholder="Enter year of birth ..." />
@@ -42,7 +42,7 @@ export default async function HomePage({
             <div className="flex justify-end w-full mb-3 mr-5">
               <Link
                 href={`/nostalgia/${year}`}
-                className="uppercase text-white flex hover:underline"
+                className="uppercase text-neutral-50 flex hover:underline"
               >
                 Discover more
                 <ArrowRight></ArrowRight>
