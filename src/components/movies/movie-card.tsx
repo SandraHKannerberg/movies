@@ -14,12 +14,14 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <Card className="overflow-hidden rounded-lg shadow-md shadow-border border-1 border-border">
       <CardTitle className="sr-only">{movie.title}</CardTitle>
-      <CardContent className="relative h-[300px] p-0">
+      <CardContent className="p-0">
         <Image
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={`Movie Poster of ${movie.title}`}
-          fill
-          className="object-cover"
+          width={200}
+          height={400}
+          className="object-cover w-full h-auto"
+          priority
         />
       </CardContent>
     </Card>
