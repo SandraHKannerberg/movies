@@ -1,6 +1,7 @@
 "use server";
 
-import { Movie, MovieFromApi, MoviesApiData } from "./interfaces";
+import { Genre, GenresFromApi } from "../categories-genres/interfaces";
+import { Movie, MoviesApiData } from "./interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 
@@ -155,6 +156,34 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
     }));
 
     return updatedMovies;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+// Get a list all genres/categories
+export async function fetchGenres(): Promise<Genre[]> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + "/genre/movie/list?language=en",
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const genreData: GenresFromApi = await res.json();
+
+    // Check data format
+    if (!Array.isArray(genreData.genres)) {
+      throw new Error("Invalid data format received");
+    }
+
+    return genreData.genres;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;
