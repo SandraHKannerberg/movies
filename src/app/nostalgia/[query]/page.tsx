@@ -1,36 +1,51 @@
-"use client";
-
-import { FilterByCategory } from "@/components/categories-genres/filter-by-category";
-import { Header } from "@/components/layout/header";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/movies/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
-import { Genre } from "@/lib/categories-genres/interfaces";
-import { useParams, useSearchParams } from "next/navigation";
-import React, { Suspense, useState } from "react";
+import { CategorySelect } from "@/components/navigation/category-select";
+// import { Genre } from "@/lib/categories-genres/interfaces";
+import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
-export default function NostalgiaPage() {
-  const { query } = useParams();
-  const yearFromParam = useSearchParams().get("yearFrom");
-  const yearToParam = useSearchParams().get("yearTo");
-  const [selectedCategory, setSelectedCategory] = useState<Genre | null>(null);
+import React, { Suspense } from "react";
 
+export default async function NostalgiaPage({
+  params,
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ query: string }>;
+}) {
+  const { query } = await params;
+  const {
+    // yearFrom = "10",
+    // yearTo = "0",
+    yearFrom,
+    yearTo,
+    category,
+    offset,
+    page,
+    limit,
+  } = await searchParams;
   // Year of birth
   const year = parseInt(query as string, 10);
 
   // Year from
-  const yearFrom =
-    parseInt(
-      Array.isArray(yearFromParam) ? yearFromParam[0] : yearFromParam ?? "",
-      10
-    ) || undefined;
+  const yearFromParsed = parseInt(
+    Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "",
+    10
+  );
 
   // YearTo
-  const yearTo =
-    parseInt(
-      Array.isArray(yearToParam) ? yearToParam[0] : yearToParam ?? "",
-      10
-    ) || undefined;
+  const yearToParsed = parseInt(
+    Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "",
+    10
+  );
+
+  // Fetch movies
+  const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
+
+  // Om kategori finns filtrera filmer movies.filter osv filter function
+
+  // const categories = fetchAllGenres(); // This is a Promise<Genre[]>
 
   return (
     <>
@@ -53,15 +68,16 @@ export default function NostalgiaPage() {
         <MaxWidthWrapper>
           {/* Filter and sortby section */}
           <section className="flex justify-end w-full">
-            <FilterByCategory setSelectedCategory={setSelectedCategory} />
+            {/* <CategorySelect categories={categories} /> */}
           </section>
 
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
-              yearFrom={yearFrom ?? year} // If no age range year of birth are default value
-              yearTo={yearTo ?? year} // If no age range year of birth are default value
-              categoryId={selectedCategory?.id}
+              movies={movies}
+              yearFrom={yearFromParsed ?? year} // If no age range year of birth are default value
+              yearTo={yearToParsed ?? year} // If no age range year of birth are default value
+              // categoryId={category}
               className={
                 "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"
               }

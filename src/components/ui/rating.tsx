@@ -27,8 +27,8 @@ export const Rating = ({ rating }: RatingDisplayProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
-          <section className="flex items-center gap-2">
+        <TooltipTrigger className="max-w-fit">
+          <section className="flex items-center gap-2 max-w-fit">
             <div className="flex text-yellow-400">
               {/* Full stars */}
               {Array.from({ length: fullStars }).map((_, i) => (

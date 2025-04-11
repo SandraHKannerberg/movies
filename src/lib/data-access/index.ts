@@ -1,7 +1,7 @@
 "use server";
 
-import { Genre, GenresFromApi } from "../categories-genres/interfaces";
-import { Movie, MoviesApiData } from "./interfaces";
+import { Genre, GenresFromApi } from "../interfaces/category-interfaces";
+import { Movie, MoviesApiData } from "../interfaces/movie-interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 
@@ -163,7 +163,7 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
 }
 
 // Get a list all genres/categories
-export async function fetchGenres(): Promise<Genre[]> {
+export async function fetchAllGenres(): Promise<Genre[]> {
   try {
     // Fetch data
     const res = await fetch(
@@ -176,14 +176,52 @@ export async function fetchGenres(): Promise<Genre[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const genreData: GenresFromApi = await res.json();
+    const data: GenresFromApi = await res.json();
 
     // Check data format
-    if (!Array.isArray(genreData.genres)) {
+    if (!Array.isArray(data.genres)) {
       throw new Error("Invalid data format received");
     }
 
-    return genreData.genres;
+    console.log("GENRES", data.genres);
+
+    return data.genres;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+// Get details about a specific movie
+export async function fetchMovieById(movie_id: number) {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + `/movie/${movie_id}?language=en-US`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const movieData = await res.json();
+
+    // Check data format
+    // if (!Array.isArray(movieData.results)) {
+    //   throw new Error("Invalid data format received");
+    // }
+
+    // Add new properties to Movie object
+    // const updatedMovie: Movie[] = movieData.results.map((movie) => ({
+    //   ...movie,
+
+    //   isFavourite: Boolean(false),
+    //   onWatchList: Boolean(false),
+    // }));
+
+    return movieData;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;

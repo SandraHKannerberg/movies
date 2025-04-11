@@ -4,6 +4,8 @@ import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
 import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { UpcomingMovies } from "@/components/movies/upcoming-movies";
+import { fetchMoviesByYear } from "@/lib/data-access";
+import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -18,6 +20,12 @@ export default async function HomePage({
   // query from search
   const query = params.query ? String(params.query) : "";
   const year = Number(query);
+
+  // Fetch movies
+  const movies = await fetchMoviesByYear(year, year);
+
+  // Get random movies
+  const randomMovies = getRandomMovies(movies);
 
   return (
     <>
@@ -51,6 +59,7 @@ export default async function HomePage({
             {/* TODO: Loader component */}
             <Suspense fallback={"Loading...."}>
               <MoviesList
+                movies={randomMovies}
                 yearFrom={year}
                 yearTo={year}
                 showRandom={true}
