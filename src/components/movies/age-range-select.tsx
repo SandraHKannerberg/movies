@@ -21,7 +21,7 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     "40-49",
     "50-59",
     "60-69",
-    "70+",
+    "70+", // TODO: checka hur denna fungerar
   ];
 
   // Function to filter age range depending on users age

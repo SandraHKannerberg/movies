@@ -1,7 +1,7 @@
 "use server";
 
-import { Genre, GenresFromApi } from "../categories-genres/interfaces";
-import { Movie, MoviesApiData } from "./interfaces";
+import { Genre, GenresFromApi } from "../interfaces/category-interfaces";
+import { Movie, MoviesApiData } from "../interfaces/movie-interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 

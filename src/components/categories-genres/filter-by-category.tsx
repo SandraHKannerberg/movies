@@ -11,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { fetchGenres } from "@/lib/movies/action";
-import { Genre } from "@/lib/categories-genres/interfaces";
+import { fetchGenres } from "@/lib/data-access/action";
+import { Genre } from "@/lib/interfaces/category-interfaces";
 
 interface FilterByCategoryProps {
   setSelectedCategory: (category: Genre | null) => void;
