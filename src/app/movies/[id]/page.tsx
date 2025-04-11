@@ -1,5 +1,5 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
-import { fetchMovieById } from "@/lib/data-access/action";
+import { fetchMovieById } from "@/lib/data-access";
 import React from "react";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";

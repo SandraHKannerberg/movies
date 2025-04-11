@@ -1,9 +1,9 @@
-// import { FilterByCategory } from "@/components/categories-genres/filter-by-category";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/movies/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
+import { CategorySelect } from "@/components/navigation/category-select";
 // import { Genre } from "@/lib/categories-genres/interfaces";
-import { fetchMoviesByYear } from "@/lib/data-access/action";
+import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
 
@@ -44,7 +44,8 @@ export default async function NostalgiaPage({
   const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
 
   // Om kategori finns filtrera filmer movies.filter osv filter function
-  //const [selectedCategory, setSelectedCategory] = useState<Genre | null>(null);
+
+  // const categories = fetchAllGenres(); // This is a Promise<Genre[]>
 
   return (
     <>
@@ -67,7 +68,7 @@ export default async function NostalgiaPage({
         <MaxWidthWrapper>
           {/* Filter and sortby section */}
           <section className="flex justify-end w-full">
-            {/* <FilterByCategory setSelectedCategory={setSelectedCategory} /> */}
+            {/* <CategorySelect categories={categories} /> */}
           </section>
 
           {/* TODO: Loader component */}

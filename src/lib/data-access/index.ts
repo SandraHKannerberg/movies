@@ -163,7 +163,7 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
 }
 
 // Get a list all genres/categories
-export async function fetchGenres(): Promise<Genre[]> {
+export async function fetchAllGenres(): Promise<Genre[]> {
   try {
     // Fetch data
     const res = await fetch(
@@ -176,14 +176,16 @@ export async function fetchGenres(): Promise<Genre[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const genreData: GenresFromApi = await res.json();
+    const data: GenresFromApi = await res.json();
 
     // Check data format
-    if (!Array.isArray(genreData.genres)) {
+    if (!Array.isArray(data.genres)) {
       throw new Error("Invalid data format received");
     }
 
-    return genreData.genres;
+    console.log("GENRES", data.genres);
+
+    return data.genres;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;

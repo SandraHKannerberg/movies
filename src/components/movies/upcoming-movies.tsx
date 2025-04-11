@@ -1,4 +1,4 @@
-import { fetchUpcomingMovies } from "@/lib/data-access/action";
+import { fetchUpcomingMovies } from "@/lib/data-access";
 import React from "react";
 import { MovieCard } from "./movie-card";
 import { Movie } from "@/lib/movies/interfaces";
