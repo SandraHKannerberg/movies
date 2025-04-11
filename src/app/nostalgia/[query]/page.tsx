@@ -1,5 +1,5 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
-import { AgeRangeSelect } from "@/components/movies/age-range-select";
+import { AgeRangeSelect } from "@/components/navigation/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
 import { CategorySelect } from "@/components/navigation/category-select";
 // import { Genre } from "@/lib/categories-genres/interfaces";

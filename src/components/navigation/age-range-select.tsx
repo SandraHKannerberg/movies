@@ -11,7 +11,7 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
 
   const [selectedAgeRange, setSelectedAgeRange] = useState<string | null>(null);
   const currentYear = new Date().getFullYear();
-  const age = currentYear - year; // Calculate the users age
+  const age = currentYear - year; // Calculate the users age -- this value is used to filter out age ranges higher than the user's current age
 
   const ageRangeOptions = [
     "0-12",
@@ -21,7 +21,7 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     "40-49",
     "50-59",
     "60-69",
-    "70+", // TODO: checka hur denna fungerar
+    "70+",
   ];
 
   // Function to filter age range depending on users age
@@ -41,26 +41,36 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
   // Get all relevant age ranges
   const availableAgeRanges = filterAgeRanges();
 
-  // Get the age range for the api-call
+  // Calculate the years of the selected age range
   const getYearRange = () => {
-    if (selectedAgeRange) {
-      const [minAge, maxAge] = selectedAgeRange.split("-").map(Number);
+    if (!selectedAgeRange) return;
 
-      const birthYear = Number(year);
+    const birthYear = Number(year);
+    const currentYear = new Date().getFullYear();
 
-      const yearFrom = birthYear + minAge;
-      const yearTo = birthYear + maxAge;
+    let minAge: number;
+    let maxAge: number | undefined; // maxAge going to be undefined when the user select 70+
 
-      const params = new URLSearchParams(searchParams);
-
-      params.set("yearFrom", yearFrom.toString());
-      params.set("yearTo", yearTo.toString());
-
-      replace(`${pathname}?${params.toString()}`);
+    if (selectedAgeRange.includes("+")) {
+      minAge = parseInt(selectedAgeRange, 10); // 70
+      maxAge = undefined;
+    } else {
+      [minAge, maxAge] = selectedAgeRange.split("-").map(Number);
     }
+
+    // Calculation
+    const yearFrom = birthYear + minAge;
+    const yearTo = maxAge ? birthYear + maxAge : currentYear; // If 70+ are the selected age maxAge = currentYear
+
+    // Set the params
+    const params = new URLSearchParams(searchParams);
+    params.set("yearFrom", yearFrom.toString());
+    params.set("yearTo", yearTo.toString());
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
-  // Call getYearRange when selectedAgeRange change
+  // Run getYearRange when selectedAgeRange change
   useEffect(() => {
     if (selectedAgeRange) {
       getYearRange();
