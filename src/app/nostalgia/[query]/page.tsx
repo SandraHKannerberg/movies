@@ -15,30 +15,20 @@ export default async function NostalgiaPage({
   params: Promise<{ query: string }>;
 }) {
   const { query } = await params;
-  const {
-    // yearFrom = "10",
-    // yearTo = "0",
-    yearFrom,
-    yearTo,
-    category,
-    offset,
-    page,
-    limit,
-  } = await searchParams;
+
+  const { yearFrom, yearTo, category, page } = await searchParams;
+
   // Year of birth
   const year = parseInt(query as string, 10);
 
   // Year from
-  const yearFromParsed = parseInt(
-    Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "",
-    10
-  );
+  const yearFromParsed: number =
+    parseInt(Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "", 10) ||
+    year; // fallback
 
   // YearTo
-  const yearToParsed = parseInt(
-    Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "",
-    10
-  );
+  const yearToParsed: number =
+    parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
   // Fetch movies
   const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
@@ -75,8 +65,8 @@ export default async function NostalgiaPage({
           <Suspense fallback={"Loading...."}>
             <MoviesList
               movies={movies}
-              yearFrom={yearFromParsed ?? year} // If no age range year of birth are default value
-              yearTo={yearToParsed ?? year} // If no age range year of birth are default value
+              yearFrom={yearFromParsed} // If no age range year of birth are default value
+              yearTo={yearToParsed} // If no age range year of birth are default value
               // categoryId={category}
               className={
                 "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"

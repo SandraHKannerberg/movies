@@ -16,15 +16,15 @@ export const MoviesList = ({
   categoryId,
   movies,
 }: MoviesListProps) => {
-  const filteredMovies = categoryId
-    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
-    : movies;
+  // const filteredMovies = categoryId
+  //   ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
+  //   : movies;
 
   return (
     <>
       {movies ? (
         <ul className={className}>
-          {filteredMovies.map((movie) => (
+          {movies.map((movie) => (
             <li key={movie.id}>
               <MovieCard movie={movie} />
             </li>
