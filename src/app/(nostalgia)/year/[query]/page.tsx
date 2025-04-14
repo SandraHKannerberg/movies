@@ -6,7 +6,7 @@ import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
 
-export default async function NostalgiaPage({
+export default async function YearPage({
   params,
   searchParams,
 }: {

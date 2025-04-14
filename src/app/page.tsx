@@ -49,7 +49,7 @@ export default async function HomePage({
             {/* TODO: hover animation */}
             <div className="flex justify-end w-full mt-3 mb-5 col-span-2">
               <Link
-                href={`/nostalgia/${year}`}
+                href={`/year/${year}`}
                 className="uppercase text-neutral-50 flex hover:underline z-100"
               >
                 Discover more movies

@@ -26,11 +26,11 @@ export const Navbar = ({ className }: NavbarProps) => {
           </Link>
         </NavigationMenuItem>
 
-        {/* Nostalgia */}
+        {/* Nostalgia -- Year */}
         <NavigationMenuItem className="uppercase">
-          <Link href="/nostalgia" legacyBehavior passHref>
+          <Link href="/year" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Nostalgia
+              Year
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
