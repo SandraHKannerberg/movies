@@ -2,7 +2,6 @@ import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/navigation/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
 import { CategorySelect } from "@/components/navigation/category-select";
-// import { Genre } from "@/lib/categories-genres/interfaces";
 import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
@@ -30,12 +29,19 @@ export default async function NostalgiaPage({
   const yearToParsed: number =
     parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
-  // Fetch movies
+  // Get movies
   const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
 
-  // Om kategori finns filtrera filmer movies.filter osv filter function
+  // Get categories
+  const categories = await fetchAllGenres();
 
-  // const categories = fetchAllGenres(); // This is a Promise<Genre[]>
+  // Find the category id
+  const categoryId = categories.find((c) => c.name === category)?.id;
+
+  // Filter movies by category id
+  const filterMovies = categoryId
+    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
+    : movies;
 
   return (
     <>
@@ -58,16 +64,15 @@ export default async function NostalgiaPage({
         <MaxWidthWrapper>
           {/* Filter and sortby section */}
           <section className="flex justify-end w-full">
-            {/* <CategorySelect categories={categories} /> */}
+            <CategorySelect categories={categories} />
           </section>
 
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
-              movies={movies}
+              movies={filterMovies}
               yearFrom={yearFromParsed} // If no age range year of birth are default value
               yearTo={yearToParsed} // If no age range year of birth are default value
-              // categoryId={category}
               className={
                 "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"
               }
