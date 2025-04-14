@@ -25,7 +25,7 @@ export default async function HomePage({
   const movies = await fetchMoviesByYear(year, year, 1); // Page 1 as default
 
   // Get random movies
-  const randomMovies = getRandomMovies(movies);
+  const randomMovies = getRandomMovies(movies.results);
 
   return (
     <>

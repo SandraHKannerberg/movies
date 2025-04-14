@@ -6,7 +6,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getRandomMovies(movies: Movie[], count: number = 5): Movie[] {
+export function getRandomMovies(
+  movies: Movie[] = [],
+  count: number = 5
+): Movie[] {
+  if (!Array.isArray(movies)) return [];
   const shuffled = [...movies].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }

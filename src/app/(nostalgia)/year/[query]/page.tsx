@@ -30,11 +30,8 @@ export default async function YearPage({
   const yearToParsed: number =
     parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
-  //Pagination
-  // Page
+  // Current page
   const pageNumber = Number(page) || 1;
-  //TODO: change to dynamic code later
-  let totalPages = 10;
 
   // Get movies
   const movies = await fetchMoviesByYear(
@@ -42,6 +39,9 @@ export default async function YearPage({
     yearToParsed,
     pageNumber
   );
+
+  // Total pages
+  let totalPages = movies.total_pages;
 
   // Get categories
   const categories = await fetchAllGenres();
@@ -51,8 +51,8 @@ export default async function YearPage({
 
   // Filter movies by category id
   const filterMovies = categoryId
-    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
-    : movies;
+    ? movies.results.filter((movie) => movie.genre_ids.includes(categoryId))
+    : movies.results;
 
   return (
     <>
