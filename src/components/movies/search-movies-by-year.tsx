@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchIcon } from "lucide-react";
+import { Label } from "@radix-ui/react-label";
 
 export const SearchMoviesByYear = ({
   placeholder,
@@ -32,13 +33,13 @@ export const SearchMoviesByYear = ({
   return (
     // TODO: use form from shadcn??
     <form className="space-y-4 relative mt-5 w-full">
-      <label
+      <Label
         htmlFor="year"
         className="sr-only"
         aria-label="Enter year of birth"
       >
         Enter year of birth
-      </label>
+      </Label>
       <Input
         id="year"
         type="text"
