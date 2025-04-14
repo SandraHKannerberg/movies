@@ -5,6 +5,7 @@ import { CategorySelect } from "@/components/navigation/category-select";
 import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
+import MoviesPagination from "@/components/navigation/movies-pagination";
 
 export default async function YearPage({
   params,
@@ -29,8 +30,18 @@ export default async function YearPage({
   const yearToParsed: number =
     parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
+  //Pagination
+  // Page
+  const pageNumber = Number(page) || 1;
+  //TODO: change to dynamic code later
+  let totalPages = 10;
+
   // Get movies
-  const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
+  const movies = await fetchMoviesByYear(
+    yearFromParsed,
+    yearToParsed,
+    pageNumber
+  );
 
   // Get categories
   const categories = await fetchAllGenres();
@@ -78,6 +89,11 @@ export default async function YearPage({
               }
             />
           </Suspense>
+
+          <MoviesPagination
+            totalPages={totalPages}
+            currentPage={pageNumber}
+          ></MoviesPagination>
         </MaxWidthWrapper>
       </main>
     </>

@@ -21,8 +21,8 @@ export default async function HomePage({
   const query = params.query ? String(params.query) : "";
   const year = Number(query);
 
-  // Fetch movies
-  const movies = await fetchMoviesByYear(year, year);
+  // Get movies
+  const movies = await fetchMoviesByYear(year, year, 1); // Page 1 as default
 
   // Get random movies
   const randomMovies = getRandomMovies(movies);

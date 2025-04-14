@@ -18,7 +18,6 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // The "use" hook has await built in
   const allCategories = categories;
 
   // If no categories throw an error

@@ -1,12 +1,12 @@
 // Movie array from API
-export interface MoviesApiData {
-  results: MovieFromApi[];
+export interface MoviesResultsListFromApi {
+  results: MovieObjectFromApi[];
   total_pages: number;
   total_results: number;
 }
 
 // Movie object from API
-export interface MovieFromApi {
+export interface MovieObjectFromApi {
   id: number;
   adult: boolean;
   backdrop_path: string;

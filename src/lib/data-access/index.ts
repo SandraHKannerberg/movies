@@ -1,7 +1,10 @@
 "use server";
 
 import { Genre, GenresFromApi } from "../interfaces/category-interfaces";
-import { Movie, MoviesApiData } from "../interfaces/movie-interfaces";
+import {
+  Movie,
+  MoviesResultsListFromApi,
+} from "../interfaces/movie-interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 
@@ -15,15 +18,16 @@ const options = {
   },
 };
 
-// Get a list of movies depending on year of birth and agerange
+// Get a list of movies depending on year of birth and selected agerange
 export async function fetchMoviesByYear(
   yearFrom: number,
-  yearTo: number
+  yearTo: number,
+  page: number
 ): Promise<Movie[]> {
   try {
     // Fetch data
     const res = await fetch(
-      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=en|sv`,
+      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=en|sv`,
       options
     );
 
@@ -32,8 +36,8 @@ export async function fetchMoviesByYear(
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
-
+    const movieData: MoviesResultsListFromApi = await res.json();
+    console.log("MOVIEDATA", movieData);
     // Check data format
     if (!Array.isArray(movieData.results)) {
       throw new Error("Invalid data format received");
@@ -68,7 +72,7 @@ export async function fetchTopRatedMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -104,7 +108,7 @@ export async function fetchNowPlayingMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -140,7 +144,7 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
