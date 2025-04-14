@@ -3,6 +3,7 @@
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -54,23 +55,12 @@ const MoviesPagination = ({
           />
         </PaginationItem>
 
-        {/* Page numbers */}
-        {[...Array(totalPages)].map((_, i) => {
-          const page = i + 1;
-          const href = `${pathname}?${createQueryString("page", String(page))}`;
-
-          return (
-            <PaginationItem key={page}>
-              <PaginationLink
-                href={href}
-                isActive={page === currentPage}
-                onClick={(e) => handleClick(e, page)}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          );
-        })}
+        {/* Current page / total pages */}
+        <div className="flex items-center px-2">
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+        </div>
 
         {/* Next */}
         <PaginationItem>
