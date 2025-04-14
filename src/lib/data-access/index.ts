@@ -183,8 +183,6 @@ export async function fetchAllGenres(): Promise<Genre[]> {
       throw new Error("Invalid data format received");
     }
 
-    console.log("GENRES", data.genres);
-
     return data.genres;
   } catch (error) {
     console.error("Error, can not fetch data:", error);

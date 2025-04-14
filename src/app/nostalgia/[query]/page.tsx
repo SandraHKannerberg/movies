@@ -1,8 +1,7 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
-import { AgeRangeSelect } from "@/components/movies/age-range-select";
+import { AgeRangeSelect } from "@/components/navigation/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
 import { CategorySelect } from "@/components/navigation/category-select";
-// import { Genre } from "@/lib/categories-genres/interfaces";
 import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
@@ -15,37 +14,34 @@ export default async function NostalgiaPage({
   params: Promise<{ query: string }>;
 }) {
   const { query } = await params;
-  const {
-    // yearFrom = "10",
-    // yearTo = "0",
-    yearFrom,
-    yearTo,
-    category,
-    offset,
-    page,
-    limit,
-  } = await searchParams;
+
+  const { yearFrom, yearTo, category, page } = await searchParams;
+
   // Year of birth
   const year = parseInt(query as string, 10);
 
   // Year from
-  const yearFromParsed = parseInt(
-    Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "",
-    10
-  );
+  const yearFromParsed: number =
+    parseInt(Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "", 10) ||
+    year; // fallback
 
   // YearTo
-  const yearToParsed = parseInt(
-    Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "",
-    10
-  );
+  const yearToParsed: number =
+    parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
-  // Fetch movies
+  // Get movies
   const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
 
-  // Om kategori finns filtrera filmer movies.filter osv filter function
+  // Get categories
+  const categories = await fetchAllGenres();
 
-  // const categories = fetchAllGenres(); // This is a Promise<Genre[]>
+  // Find the category id
+  const categoryId = categories.find((c) => c.name === category)?.id;
+
+  // Filter movies by category id
+  const filterMovies = categoryId
+    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
+    : movies;
 
   return (
     <>
@@ -68,16 +64,15 @@ export default async function NostalgiaPage({
         <MaxWidthWrapper>
           {/* Filter and sortby section */}
           <section className="flex justify-end w-full">
-            {/* <CategorySelect categories={categories} /> */}
+            <CategorySelect categories={categories} />
           </section>
 
           {/* TODO: Loader component */}
           <Suspense fallback={"Loading...."}>
             <MoviesList
-              movies={movies}
-              yearFrom={yearFromParsed ?? year} // If no age range year of birth are default value
-              yearTo={yearToParsed ?? year} // If no age range year of birth are default value
-              // categoryId={category}
+              movies={filterMovies}
+              yearFrom={yearFromParsed} // If no age range year of birth are default value
+              yearTo={yearToParsed} // If no age range year of birth are default value
               className={
                 "grid justify-center gap-3 gap-y-8 px-3 grid-cols-2 md:grid-cols-5 md:px-0 md:gap-8"
               }

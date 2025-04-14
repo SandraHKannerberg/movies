@@ -7,30 +7,23 @@ interface MoviesListProps {
   yearTo: number;
   showRandom?: boolean;
   className?: string;
-  categoryId?: number | undefined;
   movies: Movie[];
 }
 
-export const MoviesList = ({
-  className,
-  categoryId,
-  movies,
-}: MoviesListProps) => {
-  const filteredMovies = categoryId
-    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
-    : movies;
-
+export const MoviesList = ({ className, movies }: MoviesListProps) => {
   return (
     <>
-      {movies ? (
+      {movies.length !== 0 ? (
         <ul className={className}>
-          {filteredMovies.map((movie) => (
+          {movies.map((movie) => (
             <li key={movie.id}>
               <MovieCard movie={movie} />
             </li>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <p>No movies found in selected category</p>
+      )}
     </>
   );
 };
