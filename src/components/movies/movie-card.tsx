@@ -9,7 +9,7 @@ import {
   // CardHeader, //Save for later
   CardTitle,
 } from "@/components/ui/card";
-import { Movie } from "@/lib/movies/interfaces";
+import { Movie } from "@/lib/interfaces/movie-interfaces";
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
