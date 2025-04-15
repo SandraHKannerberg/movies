@@ -27,11 +27,14 @@ export const SortBySelect = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="sortby">Sort by:</Label>
+    <div className="flex gap-2">
+      <Label htmlFor="sortby">Sort by</Label>
       <Select value={currentValue} onValueChange={handleChange}>
-        <SelectTrigger name="sortby" id="sortby">
-          <SelectValue placeholder="Sort by" />
+        <SelectTrigger name="sortby" id="sortby" className="min-w-[180px]">
+          <SelectValue
+            placeholder="Sort by options"
+            className="text-neutral-50"
+          />
         </SelectTrigger>
         <SelectContent>
           {sortOptions.map((sort) => {

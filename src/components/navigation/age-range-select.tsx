@@ -113,6 +113,3 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     </>
   );
 };
-function createQueryString(arg0: string, arg1: string, arg2: string[]) {
-  throw new Error("Function not implemented.");
-}

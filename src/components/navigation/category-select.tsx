@@ -32,8 +32,10 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="category">Category:</Label>
+    <div className="flex flex-col gap-2 mx-3">
+      <Label htmlFor="category" className="sr-only">
+        Select a category
+      </Label>
       <Select onValueChange={handleChange}>
         <SelectTrigger name="category" id="category">
           <SelectValue placeholder="Select category" />
