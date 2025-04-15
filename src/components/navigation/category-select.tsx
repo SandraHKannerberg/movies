@@ -1,9 +1,9 @@
 "use client";
 
-import React, { use } from "react";
+import React from "react";
 import { Genre } from "@/lib/interfaces/category-interfaces";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import useQueryString from "../../../hooks/use-query-string";
+import { useQueryParams } from "../../../hooks/use-query-string";
 import {
   Select,
   SelectContent,
@@ -17,8 +17,8 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const createQueryString = useQueryParams(searchParams);
 
-  // The "use" hook has await built in
   const allCategories = categories;
 
   // If no categories throw an error
@@ -26,10 +26,8 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
     throw new Error("No categories found");
   }
 
-  const createQueryString = useQueryString(searchParams);
-
   const handleChange = (value: string): void => {
-    const queryString = createQueryString("category", value);
+    const queryString = createQueryString({ category: value }, ["page"]);
     router.push(`${pathname}?${queryString}`);
   };
 

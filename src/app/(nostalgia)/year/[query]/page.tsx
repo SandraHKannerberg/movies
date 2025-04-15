@@ -5,8 +5,9 @@ import { CategorySelect } from "@/components/navigation/category-select";
 import { fetchAllGenres, fetchMoviesByYear } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
+import MoviesPagination from "@/components/navigation/movies-pagination";
 
-export default async function NostalgiaPage({
+export default async function YearPage({
   params,
   searchParams,
 }: {
@@ -29,8 +30,15 @@ export default async function NostalgiaPage({
   const yearToParsed: number =
     parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
 
+  // Current page
+  const pageNumber = Number(page) || 1;
+
   // Get movies
-  const movies = await fetchMoviesByYear(yearFromParsed, yearToParsed);
+  const movies = await fetchMoviesByYear(
+    yearFromParsed,
+    yearToParsed,
+    pageNumber
+  );
 
   // Get categories
   const categories = await fetchAllGenres();
@@ -40,8 +48,19 @@ export default async function NostalgiaPage({
 
   // Filter movies by category id
   const filterMovies = categoryId
-    ? movies.filter((movie) => movie.genre_ids.includes(categoryId))
-    : movies;
+    ? movies.results.filter((movie) => movie.genre_ids.includes(categoryId))
+    : movies.results;
+
+  // Movies per page -- can't change this, it is always 20 per page from the api
+  const moviesPerPage = 20;
+
+  // Count total pages for filterMovies
+  let totalPages = Math.ceil(filterMovies.length / moviesPerPage);
+
+  // If no selected category, use total_pages from api
+  if (!categoryId) {
+    totalPages = movies.total_pages;
+  }
 
   return (
     <>
@@ -78,6 +97,11 @@ export default async function NostalgiaPage({
               }
             />
           </Suspense>
+
+          <MoviesPagination
+            totalPages={totalPages}
+            currentPage={pageNumber}
+          ></MoviesPagination>
         </MaxWidthWrapper>
       </main>
     </>

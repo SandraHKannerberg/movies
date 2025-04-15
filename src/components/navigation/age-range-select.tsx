@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQueryParams } from "../../../hooks/use-query-string";
 
 export const AgeRangeSelect = ({ year }: { year: number }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const createQueryString = useQueryParams(searchParams);
 
   const [selectedAgeRange, setSelectedAgeRange] = useState<string | null>(null);
   const currentYear = new Date().getFullYear();
@@ -49,25 +51,27 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     const currentYear = new Date().getFullYear();
 
     let minAge: number;
-    let maxAge: number | undefined; // maxAge going to be undefined when the user select 70+
+    let maxAge: number | undefined;
 
     if (selectedAgeRange.includes("+")) {
-      minAge = parseInt(selectedAgeRange, 10); // 70
+      minAge = parseInt(selectedAgeRange, 10);
       maxAge = undefined;
     } else {
       [minAge, maxAge] = selectedAgeRange.split("-").map(Number);
     }
 
-    // Calculation
+    // Calculate yearFrom and yearTo
     const yearFrom = birthYear + minAge;
-    const yearTo = maxAge ? birthYear + maxAge : currentYear; // If 70+ are the selected age maxAge = currentYear
+    const yearTo = maxAge ? birthYear + maxAge : currentYear;
 
-    // Set the params
-    const params = new URLSearchParams(searchParams);
-    params.set("yearFrom", yearFrom.toString());
-    params.set("yearTo", yearTo.toString());
+    // Use the hook to create queryStrings for yearFrom and yearTo
+    const queryString = createQueryString(
+      { yearFrom: String(yearFrom), yearTo: String(yearTo) },
+      ["page"] // reset page (pagination)
+    );
 
-    replace(`${pathname}?${params.toString()}`);
+    // Navigate to the new querystring
+    replace(`${pathname}?${queryString}`);
   };
 
   // Run getYearRange when selectedAgeRange change
@@ -119,3 +123,6 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
     </>
   );
 };
+function createQueryString(arg0: string, arg1: string, arg2: string[]) {
+  throw new Error("Function not implemented.");
+}

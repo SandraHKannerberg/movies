@@ -21,11 +21,11 @@ export default async function HomePage({
   const query = params.query ? String(params.query) : "";
   const year = Number(query);
 
-  // Fetch movies
-  const movies = await fetchMoviesByYear(year, year);
+  // Get movies
+  const movies = await fetchMoviesByYear(year, year, 1); // Page 1 as default
 
   // Get random movies
-  const randomMovies = getRandomMovies(movies);
+  const randomMovies = getRandomMovies(movies.results);
 
   return (
     <>
@@ -49,7 +49,7 @@ export default async function HomePage({
             {/* TODO: hover animation */}
             <div className="flex justify-end w-full mt-3 mb-5 col-span-2">
               <Link
-                href={`/nostalgia/${year}`}
+                href={`/year/${year}`}
                 className="uppercase text-neutral-50 flex hover:underline z-100"
               >
                 Discover more movies
