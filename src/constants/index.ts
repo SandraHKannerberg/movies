@@ -1,4 +1,4 @@
-import { ArrowDown01, ArrowUp01, SortAsc, SortDesc } from "lucide-react";
+import { ArrowDown01, ArrowUp01, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 
 type SortType = "numeric" | "alphabetical";
 type SortDirection = "asc" | "desc";
@@ -26,12 +26,12 @@ export const sortOptions: SortOption[] = [
     type: "numeric",
   },
   {
-    label: "Rating",
+    label: "Vote count",
     value: "vote_count",
     type: "numeric",
   },
   {
-    label: "Vote Average",
+    label: "Rating",
     value: "vote_average",
     type: "numeric",
   },
@@ -52,8 +52,8 @@ export const sortOrders: Record<
     desc: { label: "1 → 0", icon: ArrowDown01 },
   },
   alphabetical: {
-    asc: { label: "A → Z", icon: SortAsc },
-    desc: { label: "Z → A", icon: SortDesc },
+    asc: { label: "A → Z", icon: ArrowUpAZ },
+    desc: { label: "Z → A", icon: ArrowDownAZ },
   },
 };
 
