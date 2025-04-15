@@ -7,6 +7,7 @@ import { fetchAllGenres, fetchMovies } from "@/lib/data-access";
 import React, { Suspense } from "react";
 import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
+import FilterDrawer from "@/components/filter/filter-drawer";
 
 export default async function YearPage({
   params,
@@ -88,7 +89,7 @@ export default async function YearPage({
           {/* Filter and sortby section */}
           <section className="flex justify-end items-center w-full gap-5 my-10">
             <SortBySelect></SortBySelect>
-            <CategorySelect categories={categories} />
+            <FilterDrawer categories={categories}></FilterDrawer>
           </section>
 
           {/* TODO: Loader component */}
