@@ -1,9 +1,9 @@
 import { fetchTopRatedMovies } from "@/lib/data-access";
 import React from "react";
 import { MovieCard } from "./movie-card";
-import { Movie } from "@/lib/movies/interfaces";
 import { Rating } from "../ui/rating";
 import clsx from "clsx";
+import { Movie } from "@/lib/interfaces/movie-interfaces";
 
 export const TopRatedMovies = async () => {
   // Fetch toprated movies
