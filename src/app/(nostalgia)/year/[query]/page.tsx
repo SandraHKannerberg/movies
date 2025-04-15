@@ -40,9 +40,6 @@ export default async function YearPage({
     pageNumber
   );
 
-  // Total pages
-  let totalPages = movies.total_pages;
-
   // Get categories
   const categories = await fetchAllGenres();
 
@@ -53,6 +50,17 @@ export default async function YearPage({
   const filterMovies = categoryId
     ? movies.results.filter((movie) => movie.genre_ids.includes(categoryId))
     : movies.results;
+
+  // Movies per page -- can't change this, it is always 20 per page from the api
+  const moviesPerPage = 20;
+
+  // Count total pages for filterMovies
+  let totalPages = Math.ceil(filterMovies.length / moviesPerPage);
+
+  // If no selected category, use total_pages from api
+  if (!categoryId) {
+    totalPages = movies.total_pages;
+  }
 
   return (
     <>
