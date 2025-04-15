@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
-import { sortOptions } from "@/constants";
+import { sortOptions, sortOrders } from "@/constants";
 
 export const SortBySelect = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ export const SortBySelect = () => {
   const searchParams = useSearchParams();
   const createQueryString = useQueryParams(searchParams);
 
-  const currentValue = searchParams.get("sortBy") ?? "popular-desc";
+  const currentValue = searchParams.get("sortBy") ?? "popularity.desc";
 
   const handleChange = (value: string) => {
     const queryString = createQueryString({ sortBy: value }, ["page"]);
@@ -27,22 +27,35 @@ export const SortBySelect = () => {
   };
 
   return (
-    <>
-      <Label htmlFor="sortby" className="sr-only">
-        Sort by:
-      </Label>
+    <div className="flex flex-col gap-2">
+      <Label htmlFor="sortby">Sort by:</Label>
       <Select value={currentValue} onValueChange={handleChange}>
-        <SelectTrigger className="w-[220px]">
+        <SelectTrigger name="sortby" id="sortby">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
-          {sortOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
+          {sortOptions.map((sort) => {
+            const orderSet = sortOrders[sort.type];
+
+            return (["asc", "desc"] as const).map((suffix) => {
+              const config = orderSet[suffix];
+              const value = `${sort.value}-${suffix}`;
+              const Icon = config.icon;
+
+              return (
+                <SelectItem
+                  key={value}
+                  value={value}
+                  className="flex items-center gap-2"
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  {sort.label} ({config.label})
+                </SelectItem>
+              );
+            });
+          })}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 };

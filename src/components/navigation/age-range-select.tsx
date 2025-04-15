@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQueryParams } from "../../../hooks/use-query-string";
+import { ageRangeOptions } from "@/constants";
 
 export const AgeRangeSelect = ({ year }: { year: number }) => {
   const searchParams = useSearchParams();
@@ -14,17 +15,6 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
   const [selectedAgeRange, setSelectedAgeRange] = useState<string | null>(null);
   const currentYear = new Date().getFullYear();
   const age = currentYear - year; // Calculate the users age -- this value is used to filter out age ranges higher than the user's current age
-
-  const ageRangeOptions = [
-    "0-12",
-    "13-19",
-    "20-29",
-    "30-39",
-    "40-49",
-    "50-59",
-    "60-69",
-    "70+",
-  ];
 
   // Function to filter age range depending on users age
   const filterAgeRanges = () => {
