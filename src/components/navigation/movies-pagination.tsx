@@ -10,7 +10,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import useQueryString from "../../../hooks/use-query-string";
+import { useQueryParams } from "../../../hooks/use-query-string";
+import { getPageNumbers } from "@/lib/utils";
 
 const MoviesPagination = ({
   totalPages,
@@ -22,23 +23,26 @@ const MoviesPagination = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const createQueryString = useQueryParams(searchParams);
 
-  const createQueryString = useQueryString(searchParams);
-
+  // Previous page
   const prevPage = Math.max(currentPage - 1, 1);
-  const nextPage = currentPage + 1;
-
-  const prevQueryString = createQueryString("page", String(prevPage));
-  const nextQueryString = createQueryString("page", String(nextPage));
-
+  const prevQueryString = createQueryString({ page: String(prevPage) });
   const prevHref = `${pathname}?${prevQueryString}`;
+
+  // Next page
+  const nextPage = currentPage + 1;
+  const nextQueryString = createQueryString({ page: String(nextPage) });
   const nextHref = `${pathname}?${nextQueryString}`;
 
-  const handleClick = (e: React.MouseEvent, page: number) => {
+  // Navigate to selected pagenumber
+  const handleClick = (e: React.MouseEvent, page: number | "...") => {
     e.preventDefault();
-    const href = `${pathname}?${createQueryString("page", String(page))}`;
+    const href = `${pathname}?${createQueryString({ page: String(page) })}`;
     router.push(href);
   };
+
+  const pagesToRender = getPageNumbers(currentPage, totalPages);
 
   return (
     <Pagination className="my-10">
@@ -55,12 +59,26 @@ const MoviesPagination = ({
           />
         </PaginationItem>
 
-        {/* Current page / total pages */}
-        <div className="flex items-center px-2">
-          <span>
-            {currentPage} / {totalPages}
-          </span>
-        </div>
+        {/* Pagenumbers */}
+        {pagesToRender.map((page, index) => (
+          <PaginationItem key={index}>
+            {page === "..." ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationLink
+                href={`${pathname}?${createQueryString({
+                  page: String(prevPage),
+                })}`}
+                onClick={(e) => {
+                  handleClick(e, page);
+                }}
+                isActive={page === currentPage}
+              >
+                {page}
+              </PaginationLink>
+            )}
+          </PaginationItem>
+        ))}
 
         {/* Next */}
         <PaginationItem>
