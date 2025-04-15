@@ -18,12 +18,31 @@ const options = {
   },
 };
 
-// Get a list of movies depending on year of birth and selected agerange
-export async function fetchMoviesByYear(
-  yearFrom: number,
-  yearTo: number,
-  page: number
-): Promise<{
+export type FetchMoviesOptions = {
+  yearFrom?: number;
+  yearTo?: number;
+  page: number;
+  sortBy?: string;
+  runtimeMin?: number;
+  runtimeMax?: number;
+  voteRatingMin?: number;
+  voteRatingMax?: number;
+  voteCountMin?: number;
+  voteCountMax?: number;
+};
+
+export async function fetchMovies({
+  yearFrom = new Date().getFullYear(), // Default current year
+  yearTo = new Date().getFullYear(), // Default current year
+  page,
+  sortBy = "popularity.desc", // Default
+  runtimeMin = 70,
+  runtimeMax = 999, // TODO: funkar inte om inget default värde anges - kan det förbättras?
+  voteRatingMin = 0,
+  voteRatingMax = 10,
+  voteCountMin = 0,
+  voteCountMax = 10000, // TODO: funkar inte om inget default värde anges - kan det förbättras?
+}: FetchMoviesOptions): Promise<{
   results: Movie[];
   page: number;
   total_pages: number;
@@ -32,7 +51,7 @@ export async function fetchMoviesByYear(
   try {
     // Fetch data
     const res = await fetch(
-      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=sv|en&with_runtime.gte=70&vote_count.gte=100`,
+      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=${sortBy}&with_release_type=2|3&with_original_language=sv|en&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&vote_average.gte=${voteRatingMin}&vote_average.lte=${voteRatingMax}&vote_count.gte=${voteCountMin}&vote_count.lte=${voteCountMax}`,
       options
     );
 
@@ -42,7 +61,7 @@ export async function fetchMoviesByYear(
     }
 
     const movieData: MoviesResultsListFromApi = await res.json();
-    console.log("MOVIEDATA", movieData);
+
     // Check data format
     if (!Array.isArray(movieData.results)) {
       throw new Error("Invalid data format received");

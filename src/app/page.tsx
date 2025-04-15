@@ -1,10 +1,10 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { MoviesList } from "@/components/movies/movies-list";
 import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
-import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
+import { SearchMoviesByYear } from "@/components/search/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { UpcomingMovies } from "@/components/movies/upcoming-movies";
-import { fetchMoviesByYear } from "@/lib/data-access";
+import { fetchMovies } from "@/lib/data-access";
 import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +22,7 @@ export default async function HomePage({
   const year = Number(query);
 
   // Get movies
-  const movies = await fetchMoviesByYear(year, year, 1); // Page 1 as default
+  const movies = await fetchMovies({ yearFrom: year, yearTo: year, page: 1 });
 
   // Get random movies
   const randomMovies = getRandomMovies(movies.results);

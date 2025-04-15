@@ -32,12 +32,12 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2 mx-3">
       <Label htmlFor="category" className="sr-only">
-        Category:
+        Select a category
       </Label>
       <Select onValueChange={handleChange}>
-        <SelectTrigger name="category" id="category" className="flex my-10">
+        <SelectTrigger name="category" id="category">
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
@@ -49,6 +49,6 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 };
