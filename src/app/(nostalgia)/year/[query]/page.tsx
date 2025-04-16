@@ -1,13 +1,17 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/navigation/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
-import { CategorySelect } from "@/components/navigation/category-select";
-import { fetchAllGenres, fetchMovies } from "@/lib/data-access";
+import {
+  fetchAllGenres,
+  fetchMovieBySearch,
+  fetchMovies,
+} from "@/lib/data-access";
 
 import React, { Suspense } from "react";
 import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
 import FilterDrawer from "@/components/filter/filter-drawer";
+import { SearchBar } from "@/components/search/search-bar";
 
 export default async function YearPage({
   params,
@@ -18,7 +22,18 @@ export default async function YearPage({
 }) {
   const { query } = await params;
 
-  const { yearFrom, yearTo, category, page, sortBy } = await searchParams;
+  const {
+    yearFrom,
+    yearTo,
+    category,
+    page,
+    sortBy,
+    runtimeMin,
+    runtimeMax,
+    ratingMin,
+    ratingMax,
+    search,
+  } = await searchParams;
 
   // Year of birth
   const year = parseInt(query as string, 10);
@@ -35,7 +50,12 @@ export default async function YearPage({
   // Current page
   const pageNumber = Number(page) || 1;
 
+  const searchQuery = search?.toString();
   const sortByOption = sortBy?.toString();
+  const runtimeMinNumber = Number(runtimeMin) || 70;
+  const runtimeMaxNumber = Number(runtimeMax) || 999;
+  const ratingMinNumber = Number(ratingMin) || 0;
+  const ratingMaxNumber = Number(ratingMax) || 10;
 
   // Get movies
   const movies = await fetchMovies({
@@ -43,7 +63,17 @@ export default async function YearPage({
     yearTo: yearToParsed,
     page: pageNumber,
     sortBy: sortByOption,
+    runtimeMin: runtimeMinNumber,
+    runtimeMax: runtimeMaxNumber,
+    voteRatingMin: ratingMinNumber,
+    voteRatingMax: ratingMaxNumber,
   });
+
+  let searchResults;
+  // Get search results
+  if (searchQuery) {
+    searchResults = await fetchMovieBySearch(searchQuery);
+  }
 
   // Get categories
   const categories = await fetchAllGenres();
@@ -87,9 +117,15 @@ export default async function YearPage({
       <main>
         <MaxWidthWrapper>
           {/* Filter and sortby section */}
-          <section className="flex justify-end items-center w-full gap-5 my-10">
-            <SortBySelect></SortBySelect>
-            <FilterDrawer categories={categories}></FilterDrawer>
+          <section className="flex justify-between items-center w-full my-10">
+            <SearchBar
+              placeholder="Search movie..."
+              results={searchResults?.results ?? []}
+            />
+            <div className="flex justify-end items-center gap-5">
+              <SortBySelect></SortBySelect>
+              <FilterDrawer categories={categories}></FilterDrawer>
+            </div>
           </section>
 
           {/* TODO: Loader component */}
