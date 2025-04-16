@@ -1,10 +1,11 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
-import { fetchMovieById } from "@/lib/data-access";
+import { fetchMovieById, fetchMovieCredits } from "@/lib/data-access";
 import React from "react";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
 import { Genre } from "@/lib/interfaces/category-interfaces";
 import { formatTime } from "@/lib/utils";
+import { User } from "lucide-react";
 
 export default async function MovieDetailsPage({
   params,
@@ -13,6 +14,22 @@ export default async function MovieDetailsPage({
 }) {
   const id = (await params).id;
   const movie = await fetchMovieById(id);
+  const movieCredits = await fetchMovieCredits(id);
+
+  // Top 12 cast
+  const sortedCast = movieCredits.cast
+    .sort((a, b) => a.order - b.order)
+    .slice(0, 12);
+
+  // Find the movie director
+  const movieDirector = movieCredits.crew.find(
+    (crew) => crew.job === "Director"
+  );
+
+  // Find the Producer
+  const movieProducer = movieCredits.crew.find(
+    (crew) => crew.job === "Producer"
+  );
 
   return (
     <>
@@ -56,6 +73,12 @@ export default async function MovieDetailsPage({
             <section className="flex flex-col">
               <p>{movie.overview}</p>
 
+              <h2 className="uppercase text-lg font-semibold mt-5">Director</h2>
+              <p>{movieDirector?.name}</p>
+
+              <h2 className="uppercase text-lg font-semibold mt-5">Producer</h2>
+              <p>{movieProducer?.name}</p>
+
               <h2 className="uppercase text-lg font-semibold mt-5">
                 Original title
               </h2>
@@ -65,6 +88,11 @@ export default async function MovieDetailsPage({
                 Original language
               </h2>
               <p>{movie.original_language}</p>
+
+              <h2 className="uppercase text-lg font-semibold mt-5">
+                Movie tagline
+              </h2>
+              <p>{movie.tagline}</p>
 
               <h2 className="uppercase text-lg font-semibold mt-5">
                 Release date
@@ -84,6 +112,37 @@ export default async function MovieDetailsPage({
               priority
             />
           </figure>
+
+          {/* Movie credits */}
+          <section className="col-span-2 grid grid-cols-3 gap-5">
+            <h2 className="col-span-3 uppercase text-2xl font-semibold mt-5">
+              Cast
+            </h2>
+            {sortedCast.map((cast) => (
+              <article key={cast.id} className="flex items-center gap-3">
+                {cast.profile_path ? (
+                  <figure className="relative w-30 h-30 rounded-full overflow-hidden">
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`}
+                      alt={`Profile image of ${cast.name}`}
+                      width={200}
+                      height={200}
+                      className="object-cover object-center"
+                    ></Image>
+                  </figure>
+                ) : (
+                  <div className="w-30 h-30 rounded-full bg-neutral-500 flex items-center justify-center text-2xl">
+                    <User></User>
+                  </div>
+                )}
+
+                <div>
+                  <h3 className="text-lg font-semibold">{cast.name}</h3>
+                  <p>{cast.character}</p>
+                </div>
+              </article>
+            ))}
+          </section>
         </MaxWidthWrapper>
       </main>
     </>
