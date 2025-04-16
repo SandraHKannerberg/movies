@@ -42,7 +42,7 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
         <DrawerHeader>
           <DrawerTitle className="text-2xl">Filter movies</DrawerTitle>
           <DrawerDescription>
-            Put a filter on to discover movies
+            Mix and match info to discover movies.
           </DrawerDescription>
         </DrawerHeader>
         <Accordion type="multiple" className="w-full space-y-2">
@@ -91,9 +91,7 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
           <Button variant="ghost" className="w-full" onClick={resetFilters}>
             Reset all filters
           </Button>
-          <DrawerClose>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
+          <DrawerClose>Cancel</DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
