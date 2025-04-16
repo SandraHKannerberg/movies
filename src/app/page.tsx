@@ -8,8 +8,6 @@ import { fetchMovies } from "@/lib/data-access";
 import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
-import { SkeletonCard } from "@/components/ui/skeleton-card";
 
 export default async function HomePage({
   searchParams,
@@ -57,18 +55,15 @@ export default async function HomePage({
                 <ArrowRight></ArrowRight>
               </Link>
             </div>
-            {/* TODO: Loader component */}
-            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
-              <MoviesList
-                movies={randomMovies}
-                yearFrom={year}
-                yearTo={year}
-                showRandom={true}
-                className={
-                  "grid col-span-2 grid-cols-2 z-10 px-3 gap-3 md:grid-cols-5"
-                }
-              />
-            </Suspense>
+            <MoviesList
+              movies={randomMovies}
+              yearFrom={year}
+              yearTo={year}
+              showRandom={true}
+              className={
+                "grid col-span-2 grid-cols-2 z-10 px-3 gap-3 md:grid-cols-5"
+              }
+            />
           </MaxWidthWrapper>
         ) : null}
         {/* Gradient fade to main */}
@@ -85,9 +80,8 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Top rated movies from different years
             </h2>
-            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
-              <TopRatedMovies />
-            </Suspense>
+
+            <TopRatedMovies />
           </section>
 
           {/* Now playing movies */}
@@ -95,9 +89,8 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Currently in theatres
             </h2>
-            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
-              <NowPlayingMovies />
-            </Suspense>
+
+            <NowPlayingMovies />
           </section>
 
           {/* Upcoming movies */}
@@ -105,9 +98,8 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Keep up with the latest
             </h2>
-            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
-              <UpcomingMovies />
-            </Suspense>
+
+            <UpcomingMovies />
           </section>
 
           {/* TODO: import about us overview component here */}
