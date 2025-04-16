@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
 import { Genre } from "@/lib/interfaces/category-interfaces";
+import { formatTime } from "@/lib/utils";
 
 export default async function MovieDetailsPage({
   params,
@@ -33,6 +34,7 @@ export default async function MovieDetailsPage({
             <section className="flex gap-3">
               <p>{movie.release_date.slice(0, 4)}</p>
               <p>{movie.status}</p>
+              <p>{formatTime(movie.runtime)}</p>
             </section>
 
             {/* Rating */}
