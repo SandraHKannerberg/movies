@@ -1,9 +1,9 @@
 import { fetchNowPlayingMovies } from "@/lib/data-access";
 import React from "react";
 import { MovieCard } from "./movie-card";
-import { Movie } from "@/lib/movies/interfaces";
 import { Rating } from "../ui/rating";
 import clsx from "clsx";
+import { Movie } from "@/lib/interfaces/movie-interfaces";
 
 export const NowPlayingMovies = async () => {
   const movies = await fetchNowPlayingMovies();
@@ -13,6 +13,7 @@ export const NowPlayingMovies = async () => {
     (a, b) => b.vote_average - a.vote_average
   );
 
+  // TODO: change to random movies function instead.
   // Display 10 movies
   const popularMovies: Movie[] = sortedByVote.slice(0, 10);
 

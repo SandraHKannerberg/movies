@@ -12,6 +12,7 @@ import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
 import FilterDrawer from "@/components/filter/filter-drawer";
 import { SearchBar } from "@/components/search/search-bar";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
 
 export default async function YearPage({
   params,
@@ -129,7 +130,7 @@ export default async function YearPage({
           </section>
 
           {/* TODO: Loader component */}
-          <Suspense fallback={"Loading...."}>
+          <Suspense fallback={<SkeletonCard />}>
             <MoviesList
               movies={filterMovies}
               yearFrom={yearFromParsed} // If no age range year of birth are default value

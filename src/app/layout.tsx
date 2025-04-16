@@ -3,6 +3,8 @@ import { Montserrat, Poiret_One } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 // Font-family for text - primary
 const montserrat = Montserrat({
@@ -33,7 +35,7 @@ export default function RootLayout({
         className={`${montserrat.variable} ${poiretOne.variable} antialiased`}
       >
         <Header></Header>
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
         <Footer></Footer>
       </body>
     </html>
