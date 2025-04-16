@@ -1,13 +1,13 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { AgeRangeSelect } from "@/components/navigation/age-range-select";
 import { MoviesList } from "@/components/movies/movies-list";
-import { CategorySelect } from "@/components/navigation/category-select";
 import { fetchAllGenres, fetchMovies } from "@/lib/data-access";
 
 import React, { Suspense } from "react";
 import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
 import FilterDrawer from "@/components/filter/filter-drawer";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
 
 export default async function YearPage({
   params,
@@ -93,7 +93,7 @@ export default async function YearPage({
           </section>
 
           {/* TODO: Loader component */}
-          <Suspense fallback={"Loading...."}>
+          <Suspense fallback={<SkeletonCard />}>
             <MoviesList
               movies={filterMovies}
               yearFrom={yearFromParsed} // If no age range year of birth are default value

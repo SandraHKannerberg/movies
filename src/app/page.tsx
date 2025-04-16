@@ -9,6 +9,7 @@ import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
 
 export default async function HomePage({
   searchParams,
@@ -57,7 +58,7 @@ export default async function HomePage({
               </Link>
             </div>
             {/* TODO: Loader component */}
-            <Suspense fallback={"Loading...."}>
+            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
               <MoviesList
                 movies={randomMovies}
                 yearFrom={year}
@@ -84,7 +85,9 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Top rated movies from different years
             </h2>
-            <TopRatedMovies />
+            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
+              <TopRatedMovies />
+            </Suspense>
           </section>
 
           {/* Now playing movies */}
@@ -92,7 +95,9 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Currently in theatres
             </h2>
-            <NowPlayingMovies />
+            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
+              <NowPlayingMovies />
+            </Suspense>
           </section>
 
           {/* Upcoming movies */}
@@ -100,7 +105,9 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Keep up with the latest
             </h2>
-            <UpcomingMovies />
+            <Suspense fallback={<SkeletonCard></SkeletonCard>}>
+              <UpcomingMovies />
+            </Suspense>
           </section>
 
           {/* TODO: import about us overview component here */}
