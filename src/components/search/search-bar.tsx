@@ -40,7 +40,7 @@ export const SearchBar = ({
 
   return (
     <div className="relative flex justify-center items-center w-[40%]">
-      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-50 w-5 h-5 z-100" />
+      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-50 w-5 h-5 z-100 focus:text-neutral-800" />
       <Label
         htmlFor="search"
         className="sr-only"
@@ -60,11 +60,11 @@ export const SearchBar = ({
       />
 
       <div className="absolute mt-1 top-full w-full rounded-md shadow z-10 bg-neutral-50 text-neutral-800">
-        {searchResults?.map((movie) => (
-          <ul>
+        <ul>
+          {searchResults?.map((movie) => (
             <li
               key={movie.id}
-              className="flex gap-3 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              className="flex gap-3 px-4 py-2 hover:bg-accent hover:text-neutral-50 cursor-pointer"
             >
               <Link href={`/movies/${movie.id}`}>
                 <p>
@@ -73,8 +73,8 @@ export const SearchBar = ({
                 </p>
               </Link>
             </li>
-          </ul>
-        ))}
+          ))}
+        </ul>
       </div>
     </div>
   );
