@@ -30,7 +30,11 @@ export const SortBySelect = () => {
     <div className="flex gap-2">
       <Label htmlFor="sortby">Sort by</Label>
       <Select value={currentValue} onValueChange={handleChange}>
-        <SelectTrigger name="sortby" id="sortby" className="min-w-[180px]">
+        <SelectTrigger
+          name="sortby"
+          id="sortby"
+          className="min-w-[180px] cursor-pointer"
+        >
           <SelectValue
             placeholder="Sort by options"
             className="text-neutral-50"
@@ -49,7 +53,7 @@ export const SortBySelect = () => {
                 <SelectItem
                   key={value}
                   value={value}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 cursor-pointer hover:bg-primary"
                 >
                   <Icon className="h-4 w-4 text-muted-foreground" />
                   {sort.label} ({config.label})

@@ -37,13 +37,19 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
         Select a category
       </Label>
       <Select onValueChange={handleChange}>
-        <SelectTrigger name="category" id="category">
+        <SelectTrigger name="category" id="category" className="cursor-pointer">
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Categories</SelectItem>
+          <SelectItem value="all" className="cursor-pointer hover:bg-accent">
+            All Categories
+          </SelectItem>
           {allCategories.map((category, index) => (
-            <SelectItem key={index} value={category.name}>
+            <SelectItem
+              key={index}
+              value={category.name}
+              className="cursor-pointer hover:bg-accent"
+            >
               {category.name}
             </SelectItem>
           ))}

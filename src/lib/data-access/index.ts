@@ -192,6 +192,49 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
   }
 }
 
+export async function fetchMovieBySearch(query: string): Promise<{
+  results: Movie[];
+  page: number;
+  total_pages: number;
+  total_results: number;
+}> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      `${API_ENDPOINT}/search/movie?query=${query}&include_adult=false&language=en-US&region=se&page=1`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const data: MoviesResultsListFromApi = await res.json();
+    console.log("SEARCH RESPONSE SERVER", data);
+
+    // Check data format
+    if (!Array.isArray(data.results)) {
+      throw new Error("Invalid data format received");
+    }
+
+    // Add new properties to Movie object
+    const updatedMovies: Movie[] = data.results.map((movie) => ({
+      ...movie,
+
+      isFavourite: Boolean(false),
+      isInWatchList: Boolean(false),
+    }));
+
+    const searchResponse = { ...data, results: updatedMovies };
+
+    return searchResponse;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
 // Get a list all genres/categories
 export async function fetchAllGenres(): Promise<Genre[]> {
   try {

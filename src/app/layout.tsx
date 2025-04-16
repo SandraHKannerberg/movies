@@ -35,7 +35,7 @@ export default function RootLayout({
         className={`${montserrat.variable} ${poiretOne.variable} antialiased`}
       >
         <Header></Header>
-        <Suspense fallback={<Loading />}>{children}</Suspense>
+        {children}
         <Footer></Footer>
       </body>
     </html>

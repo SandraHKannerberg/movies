@@ -21,7 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import FilterSection from "./filter-section";
 import { usePathname, useRouter } from "next/navigation";
-import { Settings2 } from "lucide-react";
+import { CircleX, Settings2 } from "lucide-react";
 import { CategorySelect } from "../navigation/category-select";
 import { Genre } from "@/lib/interfaces/category-interfaces";
 
@@ -35,26 +35,36 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
 
   return (
     <Drawer direction="right">
-      <DrawerTrigger className="flex gap-3">
+      <DrawerTrigger className="flex gap-3 cursor-pointer">
         Filter <Settings2 />
       </DrawerTrigger>
       <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6">
         <DrawerHeader>
-          <DrawerTitle className="text-2xl">Filter movies</DrawerTitle>
+          <div className="flex justify-between">
+            <DrawerTitle className="text-2xl">Filter movies</DrawerTitle>
+            <DrawerClose className="cursor-pointer">
+              <CircleX></CircleX>
+            </DrawerClose>
+          </div>
+
           <DrawerDescription>
-            Put a filter on to discover movies
+            Mix and match info to discover movies.
           </DrawerDescription>
         </DrawerHeader>
         <Accordion type="multiple" className="w-full space-y-2">
           <AccordionItem value="categories">
-            <AccordionTrigger>Categories</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Categories
+            </AccordionTrigger>
             <AccordionContent>
               <CategorySelect categories={categories}></CategorySelect>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="release-year">
-            <AccordionTrigger>Release year</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Release year
+            </AccordionTrigger>
             <AccordionContent>
               <FilterSection
                 paramKeyFrom="yearFrom"
@@ -65,18 +75,22 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
           </AccordionItem>
 
           <AccordionItem value="runtime">
-            <AccordionTrigger>Runtime (minutes)</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Runtime (minutes)
+            </AccordionTrigger>
             <AccordionContent>
               <FilterSection
                 paramKeyFrom="runtimeMin"
                 paramKeyTo="runtimeMax"
-                placeholder="Enter runtime"
+                placeholder="Enter minutes"
               />
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="rating">
-            <AccordionTrigger>Rating (vote)</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Rating (vote)
+            </AccordionTrigger>
             <AccordionContent>
               <FilterSection
                 paramKeyFrom="ratingMin"
@@ -88,12 +102,13 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
         </Accordion>
 
         <DrawerFooter>
-          <Button variant="ghost" className="w-full" onClick={resetFilters}>
+          <Button
+            variant="outline"
+            className="w-full cursor-pointer"
+            onClick={resetFilters}
+          >
             Reset all filters
           </Button>
-          <DrawerClose>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

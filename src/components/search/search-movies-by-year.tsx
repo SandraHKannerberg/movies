@@ -50,7 +50,7 @@ export const SearchMoviesByYear = ({
         defaultValue={searchParams.get("query")?.toString()}
         className="relative py-5 border-4 border-neutral-300 text-neutral-50 font-semibold bg-white/55 backdrop-blur-lg transition-all"
       />
-      <SearchIcon className="absolute right-3 top-1/3 h-[20px] w-[20px] -translate-y-1/2 text-neutral-50 peer-focus:text-neutral-900" />
+      <SearchIcon className="absolute right-3 top-1/3 h-[20px] w-[20px] -translate-y-1/2 text-neutral-50 focus:text-neutral-900" />
     </form>
   );
 };
