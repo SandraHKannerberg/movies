@@ -7,7 +7,7 @@ import {
   fetchMovies,
 } from "@/lib/data-access";
 
-import React, { Suspense } from "react";
+import React from "react";
 import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
 import FilterDrawer from "@/components/filter/filter-drawer";
@@ -75,9 +75,11 @@ export default async function YearPage({
     searchResults = await fetchMovieBySearch(searchQuery);
   }
 
+  // TODO: flytta till categoryselect / filterdrawer
   // Get categories
   const categories = await fetchAllGenres();
 
+  // TODO: byt till catgory_id som params
   // Find the category id
   const categoryId = categories.find((c) => c.name === category)?.id;
 
@@ -86,16 +88,14 @@ export default async function YearPage({
     ? movies.results.filter((movie) => movie.genre_ids.includes(categoryId))
     : movies.results;
 
+  // TODO: flytta till pagination
   // Movies per page -- can't change this, it is always 20 per page from the api
   const moviesPerPage = 20;
 
   // Count total pages for filterMovies
-  let totalPages = Math.ceil(filterMovies.length / moviesPerPage);
-
-  // If no selected category, use total_pages from api
-  if (!categoryId) {
-    totalPages = movies.total_pages;
-  }
+  const totalPages = categoryId
+    ? Math.ceil(filterMovies.length / moviesPerPage)
+    : movies.total_pages;
 
   return (
     <>

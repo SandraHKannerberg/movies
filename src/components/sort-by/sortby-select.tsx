@@ -46,7 +46,7 @@ export const SortBySelect = () => {
 
             return (["asc", "desc"] as const).map((suffix) => {
               const config = orderSet[suffix];
-              const value = `${sort.value}-${suffix}`;
+              const value = `${sort.value}.${suffix}`;
               const Icon = config.icon;
 
               return (
