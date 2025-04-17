@@ -1,4 +1,4 @@
-import { MovieDetails } from "@/lib/interfaces/movie-interfaces";
+import { Movie, MovieDetails } from "@/lib/interfaces/movie-interfaces";
 import { formatTime } from "@/lib/utils";
 import React from "react";
 import { Rating } from "../ui/rating";
@@ -22,7 +22,7 @@ const Overview = ({ movie, className }: movieDetailsProps) => {
       </section>
 
       {/* Rating */}
-      <Rating rating={movie.vote_average} />
+      <Rating rating={movie.vote_average} count={movie.vote_count} />
 
       {/* Categories */}
       <div className="flex gap-2 flex-wrap">
