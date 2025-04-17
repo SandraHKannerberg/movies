@@ -1,11 +1,11 @@
 "use server";
 
 import { Genre, GenresFromApi } from "../interfaces/category-interfaces";
-import { Credits } from "../interfaces/credits-interfaces";
+import { Credits, People } from "../interfaces/credits-interfaces";
 import {
   Movie,
   MovieDetails,
-  MovieDetailsFromApi,
+  // MovieDetailsFromApi,
   MoviesResultsListFromApi,
 } from "../interfaces/movie-interfaces";
 
@@ -43,7 +43,7 @@ export async function fetchMovies({
   runtimeMax = 999,
   voteRatingMin = 0,
   voteRatingMax = 10,
-  voteCountMin = 0,
+  voteCountMin = 100,
   voteCountMax = 10000,
 }: FetchMoviesOptions): Promise<{
   results: Movie[];
@@ -281,6 +281,9 @@ export async function fetchMovieById(movie_id: number): Promise<MovieDetails> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
+    // TODO: varför fungerar inte detta?
+    // const movieData: MovieDetailsFromApi = await res.json();
+
     const movieData = await res.json();
 
     // Add new properties to movie details
@@ -315,6 +318,31 @@ export async function fetchMovieCredits(movie_id: number): Promise<Credits> {
     const creditsData = await res.json();
 
     return creditsData;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+// Get more info about people like cast and crew
+export async function fetchPeopleById(id: number): Promise<People> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + `/person/ ${id}?language=en-US`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const peopleData = await res.json();
+
+    console.log("RESP", peopleData);
+
+    return peopleData;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;
