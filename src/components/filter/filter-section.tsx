@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import { useQueryParams } from "../../../hooks/use-query-string";
+import { Button } from "../ui/button";
 
 export default function FilterSection({
   paramKeyFrom,
@@ -22,6 +23,11 @@ export default function FilterSection({
 
   const handleChange = (key: string, value: string) => {
     const updated = createQueryString({ [key]: value }, ["page"]);
+    router.push(`${pathname}?${updated}`);
+  };
+
+  const removeFilter = (filterKey1: string, filterKey2: string) => {
+    const updated = createQueryString({}, [filterKey1, filterKey2]);
     router.push(`${pathname}?${updated}`);
   };
 
@@ -47,6 +53,9 @@ export default function FilterSection({
           onChange={(e) => handleChange(paramKeyTo, e.target.value)}
         />
       </div>
+      <Button onClick={() => removeFilter(paramKeyFrom, paramKeyTo)}>
+        Clear
+      </Button>
     </div>
   );
 }

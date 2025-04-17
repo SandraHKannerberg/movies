@@ -41,7 +41,7 @@ export const FilterDrawer = ({ categories }: { categories: Genre[] }) => {
       <DrawerTrigger className="flex gap-3 cursor-pointer">
         Filter <Settings2 />
       </DrawerTrigger>
-      <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6">
+      <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6 overflow-auto">
         <DrawerHeader>
           <div className="flex justify-between">
             <DrawerTitle className="text-2xl">Filter movies</DrawerTitle>
