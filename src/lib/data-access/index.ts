@@ -32,6 +32,7 @@ export type FetchMoviesOptions = {
   voteRatingMax?: number;
   voteCountMin?: number;
   voteCountMax?: number;
+  genre?: string;
 };
 
 export async function fetchMovies({
@@ -45,6 +46,7 @@ export async function fetchMovies({
   voteRatingMax = 10,
   voteCountMin = 100,
   voteCountMax = 10000,
+  genre,
 }: FetchMoviesOptions): Promise<{
   results: Movie[];
   page: number;
@@ -55,7 +57,7 @@ export async function fetchMovies({
     // Fetch data
     // TODO: förbättra fetch och gör den dynamisk
     const res = await fetch(
-      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=${sortBy}&with_release_type=2|3&with_original_language=sv|en&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&vote_average.gte=${voteRatingMin}&vote_average.lte=${voteRatingMax}&vote_count.gte=${voteCountMin}&vote_count.lte=${voteCountMax}`,
+      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=${sortBy}&with_release_type=2|3&with_original_language=sv|en&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&vote_average.gte=${voteRatingMin}&vote_average.lte=${voteRatingMax}&vote_count.gte=${voteCountMin}&vote_count.lte=${voteCountMax}&with_genres=${genre}`,
       options
     );
 

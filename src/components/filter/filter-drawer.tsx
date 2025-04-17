@@ -25,13 +25,16 @@ import { CircleX, Settings2 } from "lucide-react";
 import { CategorySelect } from "../navigation/category-select";
 import { Genre } from "@/lib/interfaces/category-interfaces";
 
-export default function FilterDrawer({ categories }: { categories: Genre[] }) {
+export const FilterDrawer = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // TODO: reset på varje enskilt alternativ och en reset ute på sidan
   const resetFilters = () => {
     router.push(pathname); // remove all query parameters
   };
+
+  const allCategories = categories;
 
   return (
     <Drawer direction="right">
@@ -57,7 +60,7 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
               Categories
             </AccordionTrigger>
             <AccordionContent>
-              <CategorySelect categories={categories}></CategorySelect>
+              <CategorySelect categories={allCategories}></CategorySelect>
             </AccordionContent>
           </AccordionItem>
 
@@ -113,4 +116,4 @@ export default function FilterDrawer({ categories }: { categories: Genre[] }) {
       </DrawerContent>
     </Drawer>
   );
-}
+};

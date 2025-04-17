@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Genre } from "@/lib/interfaces/category-interfaces";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useQueryParams } from "../../../hooks/use-query-string";
 import {
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
+import { Genre } from "@/lib/interfaces/category-interfaces";
 
 export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
@@ -41,13 +41,10 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all" className="cursor-pointer hover:bg-accent">
-            All Categories
-          </SelectItem>
-          {allCategories.map((category, index) => (
+          {allCategories.map((category) => (
             <SelectItem
-              key={index}
-              value={category.name}
+              key={category.id}
+              value={category.id === 0 ? "all" : category.id.toString()}
               className="cursor-pointer hover:bg-accent"
             >
               {category.name}
