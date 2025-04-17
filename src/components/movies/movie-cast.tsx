@@ -1,14 +1,25 @@
 import React from "react";
 import Image from "next/image";
-import { User } from "lucide-react";
+import { CircleX, User } from "lucide-react";
 import { Credits } from "@/lib/interfaces/credits-interfaces";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import { MovieDetails } from "@/lib/interfaces/movie-interfaces";
 
 interface creditsProps {
   credits: Credits;
+  movie: MovieDetails;
   className?: string;
 }
 
-const MovieCast = async ({ credits, className }: creditsProps) => {
+const MovieCast = async ({ credits, movie, className }: creditsProps) => {
   // Top 12 cast
   const sortedCast = credits.cast
     .sort((a, b) => a.order - b.order)
@@ -43,6 +54,36 @@ const MovieCast = async ({ credits, className }: creditsProps) => {
           </div>
         </article>
       ))}
+
+      {/* Drawer to show all cast */}
+      <Drawer direction="right">
+        <DrawerTrigger className="flex justify-center col-span-2 md:col-span-4 cursor-pointer my-5">
+          View all
+        </DrawerTrigger>
+        <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6">
+          <DrawerHeader>
+            <div className="flex justify-between">
+              <DrawerTitle className="text-2xl">Cast</DrawerTitle>
+              <DrawerClose className="cursor-pointer">
+                <CircleX></CircleX>
+              </DrawerClose>
+            </div>
+
+            <DrawerDescription aria-label={`Cast from movie ${movie.title}`}>
+              {movie.title}
+            </DrawerDescription>
+          </DrawerHeader>
+          <ul>
+            {credits.cast.map((cast) => (
+              <li key={cast.id} className="flex flex-col items-center gap-3">
+                <p>{cast.name}</p>
+              </li>
+            ))}
+          </ul>
+          {/* <DrawerFooter>
+        </DrawerFooter> */}
+        </DrawerContent>
+      </Drawer>
     </section>
   );
 };
