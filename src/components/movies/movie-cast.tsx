@@ -8,7 +8,7 @@ interface creditsProps {
   className?: string;
 }
 
-const MovieCast = ({ credits, className }: creditsProps) => {
+const MovieCast = async ({ credits, className }: creditsProps) => {
   // Top 12 cast
   const sortedCast = credits.cast
     .sort((a, b) => a.order - b.order)
@@ -16,9 +16,11 @@ const MovieCast = ({ credits, className }: creditsProps) => {
 
   return (
     <section className={className}>
-      <h2 className="col-span-3 uppercase text-2xl font-semibold mt-5">Cast</h2>
+      <h2 className="col-span-2 md:col-span-4 uppercase text-2xl font-semibold mt-5 text-center">
+        Cast
+      </h2>
       {sortedCast.map((cast) => (
-        <article key={cast.id} className="flex items-center gap-3">
+        <article key={cast.id} className="flex flex-col items-center gap-3">
           {cast.profile_path ? (
             <figure className="relative w-30 h-30 rounded-full overflow-hidden">
               <Image
@@ -36,8 +38,8 @@ const MovieCast = ({ credits, className }: creditsProps) => {
           )}
 
           <div>
-            <h3 className="text-lg font-semibold">{cast.name}</h3>
-            <p>{cast.character}</p>
+            <h3 className="text-lg font-semibold text-center">{cast.name}</h3>
+            <p className="text-center">{cast.character}</p>
           </div>
         </article>
       ))}
