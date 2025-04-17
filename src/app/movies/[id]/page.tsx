@@ -1,9 +1,5 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
-import {
-  fetchMovieById,
-  fetchMovieCredits,
-  //fetchMovieReviews,
-} from "@/lib/data-access";
+import { fetchMovieById, fetchMovieCredits } from "@/lib/data-access";
 import React from "react";
 import Details from "@/components/movies/movie-details";
 import MoviePoster from "@/components/movies/movie-poster";
@@ -18,7 +14,6 @@ export default async function MovieDetailsPage({
   const id = (await params).id;
   const movie = await fetchMovieById(id);
   const credits = await fetchMovieCredits(id);
-  // const reviews = await fetchMovieReviews(id);
 
   return (
     <>
@@ -57,13 +52,12 @@ export default async function MovieDetailsPage({
           {/* Cast */}
           <MovieCast
             credits={credits}
+            movie={movie}
             className={"col-span-2 grid grid-cols-2 md:grid-cols-4 gap-5"}
           ></MovieCast>
 
           {/* TODO: Similar movies */}
-
           {/* TODO: Movie reviews */}
-          {/* <Reviews reviews={reviews}></Reviews> */}
         </MaxWidthWrapper>
       </main>
     </>
