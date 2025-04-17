@@ -80,8 +80,6 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
               </li>
             ))}
           </ul>
-          {/* <DrawerFooter>
-        </DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     </section>
