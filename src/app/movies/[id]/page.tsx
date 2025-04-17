@@ -27,7 +27,7 @@ export default async function MovieDetailsPage({
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-background z-20" />
       </section>
       <main className="py-10 relative">
-        <MaxWidthWrapper className="grid grid-cols-2 px-3 md:px-20 max-h-fit gap-5 justify-center items-center">
+        <MaxWidthWrapper className="grid grid-cols-2 px-3 max-h-fit gap-5 justify-center items-center">
           {/* Short overview */}
           <Overview
             movie={movie}

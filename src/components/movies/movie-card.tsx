@@ -9,7 +9,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <>
       <Link href={`/movies/${movie.id}`}>
-        <Card className="h-full overflow-hidden rounded-lg shadow-md shadow-border border-1 border-border hover:shadow-2xl hover:shadow-primary transition-transform duration-300 hover:scale-105">
+        <Card className="overflow-hidden rounded-lg shadow-md shadow-border border-1 border-border hover:shadow-2xl hover:shadow-primary transition-transform duration-300 hover:scale-105">
           <CardTitle className="sr-only">{movie.title}</CardTitle>
           <CardContent className="p-0">
             <Image
