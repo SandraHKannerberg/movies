@@ -13,6 +13,7 @@ import { SortBySelect } from "@/components/sort-by/sortby-select";
 import { SearchBar } from "@/components/search/search-bar";
 import { FilterDrawer } from "@/components/filter/filter-drawer";
 import { Genre } from "@/lib/interfaces/category-interfaces";
+import ClearFilterButton from "@/components/filter/clear-filter-button";
 
 export default async function YearPage({
   params,
@@ -52,8 +53,9 @@ export default async function YearPage({
   // Current page
   const pageNumber = Number(page) || 1;
 
-  // Category id
+  // Get all categories
   const fetchedCategories = await fetchAllGenres();
+
   // Make a string of all category.id
   const allCategoryIdsAsString = fetchedCategories
     .map((category) => category.id)
@@ -73,8 +75,14 @@ export default async function YearPage({
         : category
       : allCategoryIdsAsString;
 
-  // Search input
+  // Search
   const searchQuery = search?.toString();
+
+  let searchResults;
+  // Get search results
+  if (searchQuery) {
+    searchResults = await fetchMovieBySearch(searchQuery);
+  }
 
   // Sort by opyions
   const sortByOption = sortBy?.toString();
@@ -100,12 +108,6 @@ export default async function YearPage({
     genre: categoryId,
   });
 
-  let searchResults;
-  // Get search results
-  if (searchQuery) {
-    searchResults = await fetchMovieBySearch(searchQuery);
-  }
-
   return (
     <>
       <section className="relative bg-[url('/assets/images/movie.jpg')] bg-cover bg-center w-full flex flex-col items-center py-10">
@@ -126,12 +128,14 @@ export default async function YearPage({
       <main>
         <MaxWidthWrapper>
           {/* Search, filter and sortby section */}
-          <section className="flex justify-between items-center w-full my-10">
+          <section className="flex flex-col gap-3 justify-between items-center w-full my-10 md:flex-row">
             <SearchBar
               placeholder="Search movie..."
               results={searchResults?.results ?? []}
+              className="w-full relative flex justify-center px-3 items-center md:w-[40%] md:px-0"
             />
-            <div className="flex justify-end items-center gap-5">
+            <ClearFilterButton></ClearFilterButton>
+            <div className="flex justify-end items-center gap-5 mb-3 md:mb-0">
               <SortBySelect />
               <FilterDrawer categories={allCategories} />
             </div>

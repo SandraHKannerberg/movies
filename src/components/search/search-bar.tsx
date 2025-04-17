@@ -39,8 +39,8 @@ export const SearchBar = ({
   }, 300);
 
   return (
-    <div className="relative flex justify-center items-center w-[40%]">
-      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-50 w-5 h-5 z-100 focus:text-neutral-800" />
+    <div className={className}>
+      <SearchIcon className="absolute left-5 md:left-3 top-1/2 -translate-y-1/2 text-neutral-50 w-5 h-5 z-100 focus:text-neutral-800" />
       <Label
         htmlFor="search"
         className="sr-only"
