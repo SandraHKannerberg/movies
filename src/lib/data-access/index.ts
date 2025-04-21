@@ -217,7 +217,6 @@ export async function fetchMovieBySearch(query: string): Promise<{
     }
 
     const data: MoviesResultsListFromApi = await res.json();
-    console.log("SEARCH RESPONSE SERVER", data);
 
     // Check data format
     if (!Array.isArray(data.results)) {
@@ -295,8 +294,6 @@ export async function fetchMovieById(movie_id: number): Promise<MovieDetails> {
       onWatchList: Boolean(false),
     };
 
-    console.log("DETAILS", movieDetails);
-
     return movieDetails;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
@@ -341,8 +338,6 @@ export async function fetchPeopleById(id: number): Promise<People> {
     }
 
     const peopleData = await res.json();
-
-    console.log("RESP", peopleData);
 
     return peopleData;
   } catch (error) {
