@@ -24,9 +24,6 @@ const Details = ({ movie, credits, className }: movieDetailsProps) => {
 
       <MovieCrew credits={credits}></MovieCrew>
 
-      <h2 className="uppercase text-lg font-semibold mt-5">Movie tagline</h2>
-      <p>{movie.tagline}</p>
-
       <h2 className="uppercase text-lg font-semibold mt-5">Release date</h2>
       <p>{movie.release_date}</p>
     </section>

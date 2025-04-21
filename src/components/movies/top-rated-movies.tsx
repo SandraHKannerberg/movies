@@ -25,15 +25,15 @@ export const TopRatedMovies = async () => {
                 // from md all movie-card span 1 col
                 "md:col-span-1",
                 // Baselayout
-                "col-span-1"
+                "col-span-1 flex flex-col justify-center items-center"
               )}
             >
               <MovieCard movie={movie} />
               {/* Slice the year from date */}
-              <h3 className="my-3 text-lg">
+              <h3 className="my-3 text-lg text-center">
                 From year {movie.release_date.slice(0, 4)}
               </h3>
-              <Rating rating={movie.vote_average} />
+              <Rating rating={movie.vote_average} count={movie.vote_count} />
             </li>
           ))}
         </ul>

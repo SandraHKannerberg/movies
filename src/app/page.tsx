@@ -4,7 +4,7 @@ import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
 import { SearchMoviesByYear } from "@/components/search/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { UpcomingMovies } from "@/components/movies/upcoming-movies";
-import { fetchMovies } from "@/lib/data-access";
+import { fetchAllGenres, fetchMovies } from "@/lib/data-access";
 import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -16,12 +16,25 @@ export default async function HomePage({
 }) {
   const params = await searchParams;
 
-  // query from search
+  // Check params in url
   const query = params.query ? String(params.query) : "";
   const year = Number(query);
 
+  // Get all categories
+  const fetchedCategories = await fetchAllGenres();
+
+  // Make a string of all category.id and add that value to genre in fetchMovies
+  const allCategoryIdsAsString = fetchedCategories
+    .map((category) => category.id)
+    .join("|");
+
   // Get movies
-  const movies = await fetchMovies({ yearFrom: year, yearTo: year, page: 1 });
+  const movies = await fetchMovies({
+    yearFrom: year,
+    yearTo: year,
+    page: 1,
+    genre: allCategoryIdsAsString,
+  });
 
   // Get random movies
   const randomMovies = getRandomMovies(movies.results);

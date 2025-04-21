@@ -15,7 +15,7 @@ const MoviePoster = ({ movie, className }: movieDetailsProps) => {
         alt={`Movie Poster of ${movie.title}`}
         width={200}
         height={300}
-        className="object-cover rounded-lg shadow-lg h-auto w-full"
+        className="rounded-lg shadow-lg w-full h-full object-contain"
         priority
       />
     </figure>

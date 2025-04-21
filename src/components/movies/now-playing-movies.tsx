@@ -30,12 +30,14 @@ export const NowPlayingMovies = async () => {
                 // from md all movie-card span 1 col
                 "md:col-span-1",
                 // Baselayout
-                "col-span-1"
+                "col-span-1 flex flex-col justify-center items-center"
               )}
             >
               <MovieCard movie={movie} />
-              <h3 className="my-3 text-lg">Release {movie.release_date}</h3>
-              <Rating rating={movie.vote_average} />
+              <h3 className="my-3 text-lg text-center">
+                Release {movie.release_date}
+              </h3>
+              <Rating rating={movie.vote_average} count={movie.vote_count} />
             </li>
           ))}
         </ul>

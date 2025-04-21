@@ -27,7 +27,7 @@ export default async function MovieDetailsPage({
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-background z-20" />
       </section>
       <main className="py-10 relative">
-        <MaxWidthWrapper className="grid grid-cols-2 px-3 lg:px-0 gap-8 max-h-fit">
+        <MaxWidthWrapper className="grid grid-cols-2 px-3 max-h-fit gap-5 justify-center items-center">
           {/* Short overview */}
           <Overview
             movie={movie}
@@ -38,14 +38,14 @@ export default async function MovieDetailsPage({
           <Details
             movie={movie}
             credits={credits}
-            className={"flex flex-col col-span-2 md:col-span-1"}
+            className={"flex flex-col col-span-2 lg:col-span-1"}
           ></Details>
 
           {/* Movie poster */}
           <MoviePoster
             movie={movie}
             className={
-              "w-100 col-span-2 h-auto justify-self-center md:col-span-1 md:justify-self-end"
+              "w-75 col-span-2 h-auto justify-self-center lg:col-span-1 lg:justify-self-end"
             }
           ></MoviePoster>
 

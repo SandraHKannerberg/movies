@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { Genre } from "@/lib/interfaces/category-interfaces";
+import React, { useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useQueryParams } from "../../../hooks/use-query-string";
 import {
@@ -12,12 +11,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
+import { Genre } from "@/lib/interfaces/category-interfaces";
 
 export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const createQueryString = useQueryParams(searchParams);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const allCategories = categories;
 
@@ -25,6 +26,28 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   if (!allCategories || allCategories.length <= 0) {
     throw new Error("No categories found");
   }
+
+  useEffect(() => {
+    const categoryFromSearch = searchParams.get("category");
+
+    if (categoryFromSearch) {
+      // Check if category from url exists in allCategories
+      const currentCategory = allCategories.find(
+        (cat) =>
+          cat.id ===
+          (categoryFromSearch === "all" ? 0 : Number(categoryFromSearch))
+      );
+
+      // If category exists --- set selected category
+      if (currentCategory) {
+        setSelectedCategory(currentCategory.id.toString());
+      } else {
+        setSelectedCategory("all");
+      }
+    } else {
+      setSelectedCategory("all");
+    }
+  }, [searchParams, allCategories]);
 
   const handleChange = (value: string): void => {
     const queryString = createQueryString({ category: value }, ["page"]);
@@ -36,18 +59,15 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
       <Label htmlFor="category" className="sr-only">
         Select a category
       </Label>
-      <Select onValueChange={handleChange}>
+      <Select value={selectedCategory} onValueChange={handleChange}>
         <SelectTrigger name="category" id="category" className="cursor-pointer">
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all" className="cursor-pointer hover:bg-accent">
-            All Categories
-          </SelectItem>
-          {allCategories.map((category, index) => (
+          {allCategories.map((category) => (
             <SelectItem
-              key={index}
-              value={category.name}
+              key={category.id}
+              value={category.id === 0 ? "all" : category.id.toString()}
               className="cursor-pointer hover:bg-accent"
             >
               {category.name}

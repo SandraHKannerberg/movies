@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useQueryParams } from "../../../hooks/use-query-string";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
 import { ageRangeOptions } from "@/constants";
+import { Button } from "../ui/button";
 
 export const AgeRangeSelect = ({ year }: { year: number }) => {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { replace } = useRouter();
-  const createQueryString = useQueryParams(searchParams);
+  const pathname = usePathname();
 
-  const [selectedAgeRange, setSelectedAgeRange] = useState<string | null>(null);
+  const yearFrom = searchParams.get("yearFrom");
+  const yearTo = searchParams.get("yearTo");
+
   const currentYear = new Date().getFullYear();
   const age = currentYear - year; // Calculate the users age -- this value is used to filter out age ranges higher than the user's current age
 
@@ -33,51 +33,61 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
   // Get all relevant age ranges
   const availableAgeRanges = filterAgeRanges();
 
-  // Calculate the years of the selected age range
-  const getYearRange = () => {
-    if (!selectedAgeRange) return;
+  // Active agerange from url params
+  const initialAgeRange = (() => {
+    if (!yearFrom || !year) return null;
 
-    const birthYear = Number(year);
-    const currentYear = new Date().getFullYear();
+    const fromAge = Number(yearFrom) - Number(year);
+    const toAge = yearTo ? Number(yearTo) - Number(year) : null;
 
-    let minAge: number;
-    let maxAge: number | undefined;
+    const match = availableAgeRanges.find((range) => {
+      if (range.includes("+")) {
+        const min = parseInt(range, 10);
+        return fromAge >= min && toAge === null;
+      } else {
+        const [min, max] = range.split("-").map(Number);
+        return fromAge >= min && toAge !== null && toAge <= max;
+      }
+    });
 
-    if (selectedAgeRange.includes("+")) {
-      minAge = parseInt(selectedAgeRange, 10);
-      maxAge = undefined;
+    return match ?? null;
+  })();
+
+  const [selectedAgeRange, setSelectedAgeRange] = useState<string | null>(
+    initialAgeRange
+  );
+
+  // Handle age range selection
+  const handleClick = (range: string) => {
+    setSelectedAgeRange(range);
+
+    if (!year) return;
+
+    const birth = Number(year);
+    let yearFrom, yearTo;
+
+    if (range.includes("+")) {
+      const minAge = parseInt(range, 10);
+      yearFrom = birth + minAge;
     } else {
-      [minAge, maxAge] = selectedAgeRange.split("-").map(Number);
+      const [minAge, maxAge] = range.split("-").map(Number);
+      yearFrom = birth + minAge;
+      yearTo = birth + maxAge;
     }
 
-    // Calculate yearFrom and yearTo
-    const yearFrom = birthYear + minAge;
-    const yearTo = maxAge ? birthYear + maxAge : currentYear;
-
-    // Use the hook to create queryStrings for yearFrom and yearTo
-    const queryString = createQueryString(
-      { yearFrom: String(yearFrom), yearTo: String(yearTo) },
-      ["page"] // reset page (pagination)
-    );
-
-    // Navigate to the new querystring
-    replace(`${pathname}?${queryString}`);
-  };
-
-  // Run getYearRange when selectedAgeRange change
-  useEffect(() => {
-    if (selectedAgeRange) {
-      getYearRange();
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("yearFrom", yearFrom.toString());
+    if (yearTo) {
+      params.set("yearTo", yearTo.toString());
+    } else {
+      params.delete("yearTo");
     }
-  }, [selectedAgeRange]); // If selectedAgeRange change
 
-  // Handle age range select
-  const handleAgeRangeSelect = (ageRange: string) => {
-    setSelectedAgeRange(ageRange); // Start useEffect
+    replace(`${pathname}?${params.toString()}`);
   };
 
-  // Clear age range and delete age range params
-  const handleClear = () => {
+  // Clear selection
+  const clearSelection = () => {
     setSelectedAgeRange(null);
 
     const params = new URLSearchParams(searchParams);
@@ -87,29 +97,23 @@ export const AgeRangeSelect = ({ year }: { year: number }) => {
   };
 
   return (
-    <>
-      <section className="my-3 flex gap-3 justify-center z-10">
-        {availableAgeRanges.map((ageRange) => (
-          <Button
-            key={ageRange}
-            variant="default"
-            onClick={() => handleAgeRangeSelect(ageRange)}
-            className={`cursor-pointer shadow-lg hover:bg-rose-50 hover:text-neutral-950 ${
-              selectedAgeRange === ageRange
-                ? " bg-rose-50 text-neutral-950"
-                : ""
-            }`}
-          >
-            {ageRange}
-          </Button>
-        ))}
-
-        {selectedAgeRange && (
-          <Button variant="outline" onClick={handleClear}>
-            Clear
-          </Button>
-        )}
-      </section>
-    </>
+    <section className="my-3 flex gap-3 justify-center z-10">
+      {availableAgeRanges.map((range) => (
+        <Button
+          key={range}
+          onClick={() => handleClick(range)}
+          className={`cursor-pointer shadow-lg hover:bg-rose-50 hover:text-neutral-950 ${
+            selectedAgeRange === range ? " bg-rose-50 text-neutral-950" : ""
+          }`}
+        >
+          {range}
+        </Button>
+      ))}
+      {selectedAgeRange && (
+        <Button variant="outline" onClick={clearSelection}>
+          Clear
+        </Button>
+      )}
+    </section>
   );
 };

@@ -31,7 +31,7 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
         Cast
       </h2>
       {sortedCast.map((cast) => (
-        <article key={cast.id} className="flex flex-col items-center gap-3">
+        <article key={cast.id} className="flex flex-col items-center">
           {cast.profile_path ? (
             <figure className="relative w-30 h-30 rounded-full overflow-hidden">
               <Image
@@ -80,8 +80,6 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
               </li>
             ))}
           </ul>
-          {/* <DrawerFooter>
-        </DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     </section>

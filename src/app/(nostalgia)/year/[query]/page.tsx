@@ -10,8 +10,10 @@ import {
 import React from "react";
 import MoviesPagination from "@/components/navigation/movies-pagination";
 import { SortBySelect } from "@/components/sort-by/sortby-select";
-import FilterDrawer from "@/components/filter/filter-drawer";
 import { SearchBar } from "@/components/search/search-bar";
+import { FilterDrawer } from "@/components/filter/filter-drawer";
+import { Genre } from "@/lib/interfaces/category-interfaces";
+import ClearFilterButton from "@/components/filter/clear-filter-button";
 
 export default async function YearPage({
   params,
@@ -22,6 +24,7 @@ export default async function YearPage({
 }) {
   const { query } = await params;
 
+  // Possible params in url
   const {
     yearFrom,
     yearTo,
@@ -50,10 +53,45 @@ export default async function YearPage({
   // Current page
   const pageNumber = Number(page) || 1;
 
+  // Get all categories
+  const fetchedCategories = await fetchAllGenres();
+
+  // Make a string of all category.id
+  const allCategoryIdsAsString = fetchedCategories
+    .map((category) => category.id)
+    .join("|");
+
+  // Creat an new array with all as an option
+  const allCategories: Genre[] = [
+    { id: 0, name: "All categories" },
+    ...fetchedCategories,
+  ];
+
+  // If category = all the value = allCategoryIdsAsString, and allCategoryIdsAsString are also default value
+  const categoryId =
+    typeof category === "string"
+      ? category === "all"
+        ? allCategoryIdsAsString
+        : category
+      : allCategoryIdsAsString;
+
+  // Search
   const searchQuery = search?.toString();
+
+  let searchResults;
+  // Get search results
+  if (searchQuery) {
+    searchResults = await fetchMovieBySearch(searchQuery);
+  }
+
+  // Sort by opyions
   const sortByOption = sortBy?.toString();
+
+  // Runtime
   const runtimeMinNumber = Number(runtimeMin) || 70;
   const runtimeMaxNumber = Number(runtimeMax) || 999;
+
+  // Rating
   const ratingMinNumber = Number(ratingMin) || 0;
   const ratingMaxNumber = Number(ratingMax) || 10;
 
@@ -67,35 +105,8 @@ export default async function YearPage({
     runtimeMax: runtimeMaxNumber,
     voteRatingMin: ratingMinNumber,
     voteRatingMax: ratingMaxNumber,
+    genre: categoryId,
   });
-
-  let searchResults;
-  // Get search results
-  if (searchQuery) {
-    searchResults = await fetchMovieBySearch(searchQuery);
-  }
-
-  // TODO: flytta till categoryselect / filterdrawer
-  // Get categories
-  const categories = await fetchAllGenres();
-
-  // TODO: byt till catgory_id som params
-  // Find the category id
-  const categoryId = categories.find((c) => c.name === category)?.id;
-
-  // Filter movies by category id
-  const filterMovies = categoryId
-    ? movies.results.filter((movie) => movie.genre_ids.includes(categoryId))
-    : movies.results;
-
-  // TODO: flytta till pagination
-  // Movies per page -- can't change this, it is always 20 per page from the api
-  const moviesPerPage = 20;
-
-  // Count total pages for filterMovies
-  const totalPages = categoryId
-    ? Math.ceil(filterMovies.length / moviesPerPage)
-    : movies.total_pages;
 
   return (
     <>
@@ -116,20 +127,22 @@ export default async function YearPage({
       </section>
       <main>
         <MaxWidthWrapper>
-          {/* Filter and sortby section */}
-          <section className="flex justify-between items-center w-full my-10">
+          {/* Search, filter and sortby section */}
+          <section className="flex flex-col gap-3 justify-between items-center w-full my-10 md:flex-row">
             <SearchBar
               placeholder="Search movie..."
               results={searchResults?.results ?? []}
+              className="w-full relative flex justify-center px-3 items-center md:w-[40%] md:px-0"
             />
-            <div className="flex justify-end items-center gap-5">
-              <SortBySelect></SortBySelect>
-              <FilterDrawer categories={categories}></FilterDrawer>
+            <ClearFilterButton></ClearFilterButton>
+            <div className="flex justify-end items-center gap-5 mb-3 md:mb-0">
+              <SortBySelect />
+              <FilterDrawer categories={allCategories} />
             </div>
           </section>
 
           <MoviesList
-            movies={filterMovies}
+            movies={movies.results}
             yearFrom={yearFromParsed} // If no age range year of birth are default value
             yearTo={yearToParsed} // If no age range year of birth are default value
             className={
@@ -138,7 +151,7 @@ export default async function YearPage({
           />
 
           <MoviesPagination
-            totalPages={totalPages}
+            totalPages={movies.total_pages}
             currentPage={pageNumber}
           ></MoviesPagination>
         </MaxWidthWrapper>
