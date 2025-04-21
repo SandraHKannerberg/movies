@@ -26,13 +26,13 @@ Step back in time and rediscover the magic of your movie memories - Memovies.
 
 ## 🔧 Tech Stack
 
-**Next.js (App Router)** – File-based routing and server-side rendering. [Next.js Documentation](https://nextjs.org/docs).  
-**Tailwind CSS** – Utility-first styling for pixel-perfect retro vibes  
-**shadcn/ui** – Accessible, themeable components with a modern look  
-**TypeScript** – Type-safe development for smoother scaling 
-**Lucide Icons** – A modern open-source icon library
-**TMDB API** – Movie data. [TMDB API](https://www.themoviedb.org/documentation/api)  
-**Accessibility** – Tested with WAVE and Lighthouse.
+- **Next.js (App Router)** – File-based routing and server-side rendering. [Next.js Documentation](https://nextjs.org/docs).  
+- **Tailwind CSS** – Utility-first styling for pixel-perfect retro vibes  
+- **shadcn/ui** – Accessible, themeable components with a modern look  
+- **TypeScript** – Type-safe development for smoother scaling 
+- **Lucide Icons** – A modern open-source icon library
+- **TMDB API** – Movie data. [TMDB API](https://www.themoviedb.org/documentation/api)  
+- **Accessibility** – Tested with WAVE and Lighthouse.
 
 ---
 
@@ -50,14 +50,15 @@ npm install
 To use the API, you'll need to sign up at themoviedb.org and obtain an API key.
 Create a .env.local file with:
 
-API_SECRET_KEY="your-secret-key"
-ACCESS_TOKEN_AUTH="your-secret-key"
+- API_SECRET_KEY="your-secret-key"
+- ACCESS_TOKEN_AUTH="your-secret-key"
 
 Get a free API key from TMDB.
 
 **Run the development server:**
 
 npm run dev
+
 Open http://localhost:3000 in your browser.
 
 ---
