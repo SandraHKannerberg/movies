@@ -1,4 +1,3 @@
-import { Movie } from "@/lib/interfaces/movie-interfaces";
 import {
   Tooltip,
   TooltipContent,
@@ -14,7 +13,6 @@ interface RatingDisplayProps {
 }
 
 export const Rating = ({ rating, count, className }: RatingDisplayProps) => {
-  //TODO: förbättra aria-labels
   return (
     <TooltipProvider>
       <Tooltip>
@@ -23,7 +21,9 @@ export const Rating = ({ rating, count, className }: RatingDisplayProps) => {
             <Star
               fill="currentColor"
               stroke="currentColor"
-              aria-label="Movie rating"
+              aria-label={`Rating ${rating.toFixed(1)} of ${count.toFixed(
+                0
+              )} votes`}
               className="text-yellow-400"
             />
             <p className="font-bold">{rating?.toFixed(1)} / 10</p>
