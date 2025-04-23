@@ -20,9 +20,9 @@ export default async function YearPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  params: Promise<{ query: string }>;
+  params: Promise<{ year: string }>;
 }) {
-  const { query } = await params;
+  const { year } = await params;
 
   // Possible params in url
   const {
@@ -38,17 +38,18 @@ export default async function YearPage({
     search,
   } = await searchParams;
 
-  // Year of birth
-  const year = parseInt(query as string, 10);
+  // Year as string
+  const yearAsString = parseInt(year as string, 10);
 
   // Year from
   const yearFromParsed: number =
     parseInt(Array.isArray(yearFrom) ? yearFrom[0] : yearFrom ?? "", 10) ||
-    year; // fallback
+    yearAsString; // fallback
 
   // YearTo
   const yearToParsed: number =
-    parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) || year; // fallback
+    parseInt(Array.isArray(yearTo) ? yearTo[0] : yearTo ?? "", 10) ||
+    yearAsString; // fallback
 
   // Current page
   const pageNumber = Number(page) || 1;
@@ -120,7 +121,7 @@ export default async function YearPage({
           <p className="text-center text-2xl">
             Select an age and relive movie memories
           </p>
-          <AgeRangeSelect year={year} />
+          <AgeRangeSelect year={yearAsString} />
         </MaxWidthWrapper>
         {/* Gradient fade to main */}
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-background z-20" />

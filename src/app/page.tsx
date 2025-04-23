@@ -17,7 +17,7 @@ export default async function HomePage({
   const params = await searchParams;
 
   // Check params in url
-  const query = params.query ? String(params.query) : "";
+  const query = params.year ? String(params.year) : "";
   const year = Number(query);
 
   // Get all categories
@@ -61,7 +61,7 @@ export default async function HomePage({
             {/* TODO: hover animation */}
             <div className="flex justify-end w-full mt-3 mb-5 col-span-2">
               <Link
-                href={`/year/${year}`}
+                href={`/${year}`}
                 className="uppercase text-neutral-50 flex hover:underline z-100"
               >
                 Discover more movies
