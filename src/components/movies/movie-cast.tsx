@@ -33,17 +33,17 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
       {sortedCast.map((cast) => (
         <article key={cast.id} className="flex flex-col items-center">
           {cast.profile_path ? (
-            <figure className="w-30 h-30 rounded-full overflow-hidden">
+            <figure className="w-40 h-40 rounded-full overflow-hidden">
               <Image
                 src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`}
                 alt={`Profile image of ${cast.name}`}
                 width={200}
                 height={200}
-                className="object-cover"
+                className="w-full h-full object-cover"
               ></Image>
             </figure>
           ) : (
-            <div className="w-30 h-30 rounded-full bg-neutral-500 flex items-center justify-center text-2xl">
+            <div className="w-40 h-40 rounded-full bg-neutral-500 flex items-center justify-center text-2xl">
               <User />
             </div>
           )}
