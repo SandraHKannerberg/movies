@@ -1,9 +1,9 @@
 import { fetchUpcomingMovies } from "@/lib/data-access";
 import React from "react";
 import { MovieCard } from "./movie-card";
-import { Movie } from "@/lib/movies/interfaces";
 import { Rating } from "../ui/rating";
 import clsx from "clsx";
+import { Movie } from "@/lib/interfaces/movie-interfaces";
 
 export const UpcomingMovies = async () => {
   const movies = await fetchUpcomingMovies();
@@ -29,12 +29,20 @@ export const UpcomingMovies = async () => {
                 // from md all movie-card span 1 col
                 "md:col-span-1",
                 // Baselayout
-                "col-span-1"
+                "col-span-1 flex flex-col justify-center items-center"
               )}
             >
               <MovieCard movie={movie} />
-              <h3 className="my-3 text-lg">Release {movie.release_date}</h3>
-              <Rating rating={movie.vote_average} />
+              <h3 className="my-3 text-lg text-center">
+                Release {movie.release_date}
+              </h3>
+
+              {movie.release_date &&
+              new Date(movie.release_date) <= new Date() ? (
+                <Rating rating={movie.vote_average} count={movie.vote_count} />
+              ) : (
+                <span className="text-sm text-muted-foreground">Upcoming</span>
+              )}
             </li>
           ))}
         </ul>

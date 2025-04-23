@@ -1,7 +1,13 @@
 "use server";
 
 import { Genre, GenresFromApi } from "../interfaces/category-interfaces";
-import { Movie, MoviesApiData } from "../interfaces/movie-interfaces";
+import { Credits, People } from "../interfaces/credits-interfaces";
+import {
+  Movie,
+  MovieDetails,
+  MovieDetailsFromApi,
+  MoviesResultsListFromApi,
+} from "../interfaces/movie-interfaces";
 
 const API_ENDPOINT = "https://api.themoviedb.org/3";
 
@@ -15,15 +21,63 @@ const options = {
   },
 };
 
-// Get a list of movies depending on year of birth and agerange
-export async function fetchMoviesByYear(
-  yearFrom: number,
-  yearTo: number
-): Promise<Movie[]> {
+export type FetchMoviesOptions = {
+  yearFrom?: number;
+  yearTo?: number;
+  page: number;
+  sortBy?: string;
+  runtimeMin?: number;
+  runtimeMax?: number;
+  voteRatingMin?: number;
+  voteRatingMax?: number;
+  voteCountMin?: number;
+  voteCountMax?: number;
+  genre?: string;
+};
+
+export async function fetchMovies({
+  yearFrom = new Date().getFullYear(), // Default current year
+  yearTo = new Date().getFullYear(), // Default current year
+  page,
+  sortBy = "popularity.desc", // Default
+  runtimeMin = 70,
+  runtimeMax = 999,
+  voteRatingMin = 0,
+  voteRatingMax = 10,
+  voteCountMin = 100,
+  voteCountMax = 10000,
+  genre = "0",
+}: FetchMoviesOptions): Promise<{
+  results: Movie[];
+  page: number;
+  total_pages: number;
+  total_results: number;
+}> {
+  const fetchParams = {
+    include_adult: false.toString(),
+    include_video: false.toString(),
+    language: "en-US",
+    page: page.toString(),
+    "primary_release_date.gte": `${yearFrom}-01-01`,
+    "primary_release_date.lte": `${yearTo}-12-31`,
+    region: "se",
+    sortBy,
+    with_release_type: "2|3",
+    with_original_language: "sv|en",
+    "with_runtime.gte": runtimeMin.toString(),
+    "with_runtime.lte": runtimeMax.toString(),
+    "vote_average.gte": voteRatingMin.toString(),
+    "vote_average.lte": voteRatingMax.toString(),
+    "vote_count.gte": voteCountMin.toString(),
+    "vote_count.lte": voteCountMax.toString(),
+    with_genres: genre,
+  };
+  const searchParams = new URLSearchParams(fetchParams);
+
   try {
     // Fetch data
     const res = await fetch(
-      `${API_ENDPOINT}/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&region=se&sort_by=popularity.desc&with_release_type=2|3&with_original_language=en|sv`,
+      `${API_ENDPOINT}/discover/movie?${searchParams}`,
       options
     );
 
@@ -32,7 +86,7 @@ export async function fetchMoviesByYear(
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -44,10 +98,12 @@ export async function fetchMoviesByYear(
       ...movie,
 
       isFavourite: Boolean(false),
-      onWatchList: Boolean(false),
+      isInWatchList: Boolean(false),
     }));
 
-    return updatedMovies;
+    const moviesResponse = { ...movieData, results: updatedMovies };
+
+    return moviesResponse;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;
@@ -68,7 +124,7 @@ export async function fetchTopRatedMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -80,7 +136,7 @@ export async function fetchTopRatedMovies(): Promise<Movie[]> {
       ...movie,
 
       isFavourite: Boolean(false),
-      onWatchList: Boolean(false),
+      isInWatchList: Boolean(false),
     }));
 
     return updatedMovies;
@@ -104,7 +160,7 @@ export async function fetchNowPlayingMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -116,7 +172,7 @@ export async function fetchNowPlayingMovies(): Promise<Movie[]> {
       ...movie,
 
       isFavourite: Boolean(false),
-      onWatchList: Boolean(false),
+      isInWatchList: Boolean(false),
     }));
 
     return updatedMovies;
@@ -140,7 +196,7 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData: MoviesApiData = await res.json();
+    const movieData: MoviesResultsListFromApi = await res.json();
 
     // Check data format
     if (!Array.isArray(movieData.results)) {
@@ -152,10 +208,82 @@ export async function fetchUpcomingMovies(): Promise<Movie[]> {
       ...movie,
 
       isFavourite: Boolean(false),
-      onWatchList: Boolean(false),
+      isInWatchList: Boolean(false),
     }));
 
     return updatedMovies;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+export async function fetchMovieBySearch(query: string): Promise<{
+  results: Movie[];
+  page: number;
+  total_pages: number;
+  total_results: number;
+}> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      `${API_ENDPOINT}/search/movie?query=${query}&include_adult=false&language=en-US&region=se&page=1`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const data: MoviesResultsListFromApi = await res.json();
+
+    // Check data format
+    if (!Array.isArray(data.results)) {
+      throw new Error("Invalid data format received");
+    }
+
+    // Add new properties to Movie object
+    const updatedMovies: Movie[] = data.results.map((movie) => ({
+      ...movie,
+
+      isFavourite: Boolean(false),
+      isInWatchList: Boolean(false),
+    }));
+
+    const searchResponse = { ...data, results: updatedMovies };
+
+    return searchResponse;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
+
+// Get details about a specific movie
+export async function fetchMovieById(movie_id: number): Promise<MovieDetails> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + `/movie/${movie_id}?language=en-US`,
+      options
+    );
+
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
+
+    const movieData: MovieDetailsFromApi = await res.json();
+
+    // Add new properties to movie details
+    const movieDetails = {
+      ...movieData,
+      isFavourite: Boolean(false),
+      isInWatchList: Boolean(false),
+    };
+
+    return movieDetails;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;
@@ -190,12 +318,11 @@ export async function fetchAllGenres(): Promise<Genre[]> {
   }
 }
 
-// Get details about a specific movie
-export async function fetchMovieById(movie_id: number) {
+export async function fetchMovieCredits(movie_id: number): Promise<Credits> {
   try {
     // Fetch data
     const res = await fetch(
-      API_ENDPOINT + `/movie/${movie_id}?language=en-US`,
+      API_ENDPOINT + `/movie/${movie_id}/credits?language=en-US`,
       options
     );
 
@@ -204,22 +331,32 @@ export async function fetchMovieById(movie_id: number) {
       throw new Error(`Error HTTP status: ${res.status}`);
     }
 
-    const movieData = await res.json();
+    const creditsData = await res.json();
 
-    // Check data format
-    // if (!Array.isArray(movieData.results)) {
-    //   throw new Error("Invalid data format received");
-    // }
+    return creditsData;
+  } catch (error) {
+    console.error("Error, can not fetch data:", error);
+    throw error;
+  }
+}
 
-    // Add new properties to Movie object
-    // const updatedMovie: Movie[] = movieData.results.map((movie) => ({
-    //   ...movie,
+// Get more info about people like cast and crew
+export async function fetchPeopleById(id: number): Promise<People> {
+  try {
+    // Fetch data
+    const res = await fetch(
+      API_ENDPOINT + `/person/ ${id}?language=en-US`,
+      options
+    );
 
-    //   isFavourite: Boolean(false),
-    //   onWatchList: Boolean(false),
-    // }));
+    // Check response
+    if (!res.ok) {
+      throw new Error(`Error HTTP status: ${res.status}`);
+    }
 
-    return movieData;
+    const peopleData = await res.json();
+
+    return peopleData;
   } catch (error) {
     console.error("Error, can not fetch data:", error);
     throw error;

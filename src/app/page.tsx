@@ -1,14 +1,13 @@
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
 import { MoviesList } from "@/components/movies/movies-list";
 import { NowPlayingMovies } from "@/components/movies/now-playing-movies";
-import { SearchMoviesByYear } from "@/components/movies/search-movies-by-year";
+import { SearchMoviesByYear } from "@/components/search/search-movies-by-year";
 import { TopRatedMovies } from "@/components/movies/top-rated-movies";
 import { UpcomingMovies } from "@/components/movies/upcoming-movies";
-import { fetchMoviesByYear } from "@/lib/data-access";
+import { fetchAllGenres, fetchMovies } from "@/lib/data-access";
 import { getRandomMovies } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default async function HomePage({
   searchParams,
@@ -17,15 +16,28 @@ export default async function HomePage({
 }) {
   const params = await searchParams;
 
-  // query from search
-  const query = params.query ? String(params.query) : "";
+  // Check params in url
+  const query = params.year ? String(params.year) : "";
   const year = Number(query);
 
-  // Fetch movies
-  const movies = await fetchMoviesByYear(year, year);
+  // Get all categories
+  const fetchedCategories = await fetchAllGenres();
+
+  // Make a string of all category.id and add that value to genre in fetchMovies
+  const allCategoryIdsAsString = fetchedCategories
+    .map((category) => category.id)
+    .join("|");
+
+  // Get movies
+  const movies = await fetchMovies({
+    yearFrom: year,
+    yearTo: year,
+    page: 1,
+    genre: allCategoryIdsAsString,
+  });
 
   // Get random movies
-  const randomMovies = getRandomMovies(movies);
+  const randomMovies = getRandomMovies(movies.results);
 
   return (
     <>
@@ -49,25 +61,22 @@ export default async function HomePage({
             {/* TODO: hover animation */}
             <div className="flex justify-end w-full mt-3 mb-5 col-span-2">
               <Link
-                href={`/nostalgia/${year}`}
+                href={`/${year}`}
                 className="uppercase text-neutral-50 flex hover:underline z-100"
               >
                 Discover more movies
                 <ArrowRight></ArrowRight>
               </Link>
             </div>
-            {/* TODO: Loader component */}
-            <Suspense fallback={"Loading...."}>
-              <MoviesList
-                movies={randomMovies}
-                yearFrom={year}
-                yearTo={year}
-                showRandom={true}
-                className={
-                  "grid col-span-2 grid-cols-2 z-10 px-3 gap-3 md:grid-cols-5"
-                }
-              />
-            </Suspense>
+            <MoviesList
+              movies={randomMovies}
+              yearFrom={year}
+              yearTo={year}
+              showRandom={true}
+              className={
+                "grid col-span-2 grid-cols-2 z-10 px-3 gap-3 md:grid-cols-5"
+              }
+            />
           </MaxWidthWrapper>
         ) : null}
         {/* Gradient fade to main */}
@@ -84,6 +93,7 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Top rated movies from different years
             </h2>
+
             <TopRatedMovies />
           </section>
 
@@ -92,6 +102,7 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Currently in theatres
             </h2>
+
             <NowPlayingMovies />
           </section>
 
@@ -100,6 +111,7 @@ export default async function HomePage({
             <h2 className="text-2xl text-center font-secondary font-semibold col-span-5 mb-10">
               Keep up with the latest
             </h2>
+
             <UpcomingMovies />
           </section>
 

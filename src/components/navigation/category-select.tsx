@@ -1,9 +1,8 @@
 "use client";
 
-import React, { use } from "react";
-import { Genre } from "@/lib/interfaces/category-interfaces";
+import React, { useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import useQueryString from "../../../hooks/use-query-string";
+import { useQueryParams } from "../../../hooks/use-query-string";
 import {
   Select,
   SelectContent,
@@ -12,13 +11,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
+import { Genre } from "@/lib/interfaces/category-interfaces";
 
 export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const createQueryString = useQueryParams(searchParams);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  // The "use" hook has await built in
   const allCategories = categories;
 
   // If no categories throw an error
@@ -26,31 +27,54 @@ export const CategorySelect = ({ categories }: { categories: Genre[] }) => {
     throw new Error("No categories found");
   }
 
-  const createQueryString = useQueryString(searchParams);
+  useEffect(() => {
+    const categoryFromSearch = searchParams.get("category");
+
+    if (categoryFromSearch) {
+      // Check if category from url exists in allCategories
+      const currentCategory = allCategories.find(
+        (cat) =>
+          cat.id ===
+          (categoryFromSearch === "all" ? 0 : Number(categoryFromSearch))
+      );
+
+      // If category exists --- set selected category
+      if (currentCategory) {
+        setSelectedCategory(currentCategory.id.toString());
+      } else {
+        setSelectedCategory("all");
+      }
+    } else {
+      setSelectedCategory("all");
+    }
+  }, [searchParams, allCategories]);
 
   const handleChange = (value: string): void => {
-    const queryString = createQueryString("category", value);
+    const queryString = createQueryString({ category: value }, ["page"]);
     router.push(`${pathname}?${queryString}`);
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2 mx-3">
       <Label htmlFor="category" className="sr-only">
-        Category:
+        Select a category
       </Label>
-      <Select onValueChange={handleChange}>
-        <SelectTrigger name="category" id="category" className="flex my-10">
+      <Select value={selectedCategory} onValueChange={handleChange}>
+        <SelectTrigger name="category" id="category" className="cursor-pointer">
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Categories</SelectItem>
-          {allCategories.map((category, index) => (
-            <SelectItem key={index} value={category.name}>
+          {allCategories.map((category) => (
+            <SelectItem
+              key={category.id}
+              value={category.id === 0 ? "all" : category.id.toString()}
+              className="cursor-pointer hover:bg-accent"
+            >
               {category.name}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 };

@@ -21,17 +21,17 @@ export const SearchMoviesByYear = ({
     const params = new URLSearchParams(searchParams);
     // Set the params string based on the user’s input. If the input is empty, delete it
     if (term) {
-      params.set("query", term);
+      params.set("year", term);
       params.delete("page"); //reset pagination
     } else {
-      params.delete("query");
+      params.delete("year");
     }
     //As the user types into the search bar, params.toString() translates this input into a URL-friendly format.
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
   return (
-    // TODO: use form from shadcn??
+    // TODO: change to shadcn Form and use zod for validation
     <form className="space-y-4 relative mt-5 w-full">
       <Label
         htmlFor="year"
@@ -47,10 +47,10 @@ export const SearchMoviesByYear = ({
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        defaultValue={searchParams.get("query")?.toString()}
+        defaultValue={searchParams.get("year")?.toString()}
         className="relative py-5 border-4 border-neutral-300 text-neutral-50 font-semibold bg-white/55 backdrop-blur-lg transition-all"
       />
-      <SearchIcon className="absolute right-3 top-1/3 h-[20px] w-[20px] -translate-y-1/2 text-neutral-50 peer-focus:text-neutral-900" />
+      <SearchIcon className="absolute right-3 top-1/3 h-[20px] w-[20px] -translate-y-1/2 text-neutral-50 focus:text-neutral-900" />
     </form>
   );
 };

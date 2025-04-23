@@ -4,67 +4,35 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-import { Star, StarHalf, Star as StarOutline } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface RatingDisplayProps {
-  rating: number; // Scale 0-10
+  rating: number;
+  count: number;
+  className?: string;
 }
 
-export const Rating = ({ rating }: RatingDisplayProps) => {
-  // Calculate how many stars to fill
-  const scaledRating = (rating / 10) * 5;
-
-  // How many of that should be full stars
-  const fullStars = Math.floor(scaledRating);
-
-  // Half star?
-  const hasHalfStar = scaledRating % 1 >= 0.25 && scaledRating % 1 < 0.75;
-
-  // Leave the rest empty
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-  //TODO: förbättra aria-labels
+export const Rating = ({ rating, count, className }: RatingDisplayProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger className="max-w-fit">
           <section className="flex items-center gap-2 max-w-fit">
-            <div className="flex text-yellow-400">
-              {/* Full stars */}
-              {Array.from({ length: fullStars }).map((_, i) => (
-                <Star
-                  key={`full-${i}`}
-                  fill="currentColor"
-                  stroke="currentColor"
-                  aria-label="Star rating"
-                />
-              ))}
-
-              {/* Half star */}
-              {hasHalfStar && (
-                <StarHalf
-                  key="half"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  aria-label="Star rating"
-                />
-              )}
-
-              {/* Empty stars */}
-              {/* TODO: update text-color after color-theme */}
-              {Array.from({ length: emptyStars }).map((_, i) => (
-                <StarOutline
-                  key={`empty-${i}`}
-                  fill="none"
-                  className="text-gray-400"
-                  aria-label="Star rating"
-                />
-              ))}
-            </div>
+            <Star
+              fill="currentColor"
+              stroke="currentColor"
+              aria-label={`Rating ${rating.toFixed(1)} of ${count.toFixed(
+                0
+              )} votes`}
+              className="text-yellow-400"
+            />
+            <p className="font-bold">{rating?.toFixed(1)} / 10</p>
           </section>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Rating {rating.toFixed(1)}</p>
+          <p>
+            Rating {rating?.toFixed(1)} of {count?.toFixed(0)} votes
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

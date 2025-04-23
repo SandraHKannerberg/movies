@@ -3,8 +3,8 @@ import { MovieCard } from "./movie-card";
 import { Movie } from "@/lib/interfaces/movie-interfaces";
 
 interface MoviesListProps {
-  yearFrom: number;
-  yearTo: number;
+  yearFrom?: number;
+  yearTo?: number;
   showRandom?: boolean;
   className?: string;
   movies: Movie[];
