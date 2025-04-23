@@ -11,9 +11,7 @@ export const Footer = () => {
       <div className="h-3 bg-rose-800 rounded-tr rounded-tl"></div>
       <div className="h-3 bg-rose-900"></div>
       <div className="h-3 bg-rose-950"></div>
-      {/* TODO: newsletter */}
-      {/* TODO: bugfix - separator from shadcn does not work */}
-      {/* <Separator className="my-4 bg-yellow-300 h-5" /> */}
+
       <MaxWidthWrapper className="bg-background-secondary h-min-50 rounded p-5 grid grid-cols-2 gap-5 md:gap-3 justify-between">
         <section className="flex flex-col gap-3 col-span-2 md:col-span-1 ">
           <Link href="/">
@@ -22,7 +20,6 @@ export const Footer = () => {
           <h3 className="font-secondary text-lg font-semibold">
             Timeless movies, endless memories
           </h3>
-          {/* TODO: Put social icons here */}
         </section>
         {/* TODO: Update links and content */}
         <nav className="flex flex-col gap-3 text-sm col-span-2 md:col-span-1 md:items-end">

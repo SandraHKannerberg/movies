@@ -33,18 +33,18 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
       {sortedCast.map((cast) => (
         <article key={cast.id} className="flex flex-col items-center">
           {cast.profile_path ? (
-            <figure className="relative w-30 h-30 rounded-full overflow-hidden">
+            <figure className="w-30 h-30 rounded-full overflow-hidden">
               <Image
                 src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`}
                 alt={`Profile image of ${cast.name}`}
                 width={200}
                 height={200}
-                className="object-cover object-center"
+                className="object-cover"
               ></Image>
             </figure>
           ) : (
             <div className="w-30 h-30 rounded-full bg-neutral-500 flex items-center justify-center text-2xl">
-              <User></User>
+              <User />
             </div>
           )}
 
@@ -60,7 +60,7 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
         <DrawerTrigger className="flex justify-center col-span-2 md:col-span-4 cursor-pointer my-5">
           View all
         </DrawerTrigger>
-        <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6">
+        <DrawerContent className="h-full w-[90%] ml-auto max-w-sm p-4 space-y-6 overflow-auto">
           <DrawerHeader>
             <div className="flex justify-between">
               <DrawerTitle className="text-2xl">Cast</DrawerTitle>
@@ -75,7 +75,10 @@ const MovieCast = async ({ credits, movie, className }: creditsProps) => {
           </DrawerHeader>
           <ul>
             {credits.cast.map((cast) => (
-              <li key={cast.id} className="flex flex-col items-center gap-3">
+              <li
+                key={cast.id}
+                className="flex flex-col items-center gap-3 text-center"
+              >
                 <p>{cast.name}</p>
               </li>
             ))}

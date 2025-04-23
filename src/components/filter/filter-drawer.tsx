@@ -29,7 +29,6 @@ export const FilterDrawer = ({ categories }: { categories: Genre[] }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // TODO: reset på varje enskilt alternativ och en reset ute på sidan
   const resetFilters = () => {
     router.push(pathname); // remove all query parameters
   };
