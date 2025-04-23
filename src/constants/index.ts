@@ -1,4 +1,4 @@
-import { ArrowDown01, ArrowUp01, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { ArrowDown01, ArrowDownAZ, ArrowUpAZ, ArrowUp10 } from "lucide-react";
 
 type SortType = "numeric" | "alphabetical";
 type SortDirection = "asc" | "desc";
@@ -48,12 +48,12 @@ export const sortOrders: Record<
   >
 > = {
   numeric: {
-    asc: { label: "0 → 1", icon: ArrowUp01 },
-    desc: { label: "1 → 0", icon: ArrowDown01 },
+    asc: { label: "asc", icon: ArrowDown01 },
+    desc: { label: "desc", icon: ArrowUp10 },
   },
   alphabetical: {
-    asc: { label: "A → Z", icon: ArrowUpAZ },
-    desc: { label: "Z → A", icon: ArrowDownAZ },
+    asc: { label: "asc", icon: ArrowDownAZ },
+    desc: { label: "desc", icon: ArrowUpAZ },
   },
 };
 
