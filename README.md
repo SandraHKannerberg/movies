@@ -22,8 +22,8 @@ Step back in time and rediscover the magic of your movie memories - Memovies.
 **Movie List (/[year]):**
 
 - Displays a paginated list of movie-cards, first depending on your year of birth but you can also select an age range and retrieve movies from the selected years. The age ranges depend on your current age.
+- Each card has a hover effect with animation and shadow effects.
   
-
 ![image](https://github.com/user-attachments/assets/36fa0edf-b577-4937-86c4-1ecc3e2184cb)
 
 - Search movies by title (or part of a title)
