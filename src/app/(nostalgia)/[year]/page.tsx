@@ -118,9 +118,9 @@ export default async function YearPage({
           <h1 className="font-secondary text-5xl font-semibold text-center mb-10">
             Nostalgic movie nights
           </h1>
-          <p className="text-center text-2xl">
+          <h2 className="text-center text-2xl">
             Select an age and relive movie memories
-          </p>
+          </h2>
           <AgeRangeSelect year={yearAsString} />
         </MaxWidthWrapper>
         {/* Gradient fade to main */}
